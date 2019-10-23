@@ -3,4 +3,14 @@
     <string name="opencamera">Open Camera</string>
     <string name="accesslogs">Access Logs</string>
     <string name="viewemployees">View Employees</string>
+
+
+    <string name="employeeDepartmentPrompt">Choose a country</string>
+
+    <string-array name="department_arrays">
+        <item>Human Resources</item>
+        <item>Accounting</item>
+        <item>Executive</item>
+        <item>Engineering</item>
+    </string-array>
 </resources>
