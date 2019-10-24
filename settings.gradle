@@ -1,3 +1,4 @@
 include ':app'
 rootProject.name='FRSecurity'
-include ':openCV'
+include ':opencv'
+project(':opencv').projectDir = new File(opencvsdk + '/sdk')
