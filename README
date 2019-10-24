@@ -1,0 +1,7 @@
+
+Make sure NDK, CMake, LLDB are installed.
+
+You need to change grade.properties:
+	opencvsdk=/Users/joshtai/Desktop/CSE118/OpenCV-android-sdk-4.1.1/
+	should become:
+	opencvsdk=<path to your opencv sdk>
