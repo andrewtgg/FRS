@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">FRSecurity</string>
+    <string name="open_main_camera">Start Camera</string>
+    <string name="access_logs">Access Logs</string>
+    <string name="view_employees">View Employees</string>
 </resources>

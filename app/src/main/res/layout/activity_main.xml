@@ -1,11 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:id="@+id/linearLayout"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    tools:context=".MainActivity"
+    >
 
-    <org.opencv.android.JavaCameraView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/main_surface" />
+
+
+
+    <Button
+        android:id="@+id/button_main_cam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/open_main_camera" />
+
+    <Button
+        android:id="@+id/button_access_logs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/access_logs" />
+
+    <Button
+        android:id="@+id/button_view_employees"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/view_employees" />
+
 
 </LinearLayout>
