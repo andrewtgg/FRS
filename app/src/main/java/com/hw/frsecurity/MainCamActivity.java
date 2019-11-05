@@ -16,6 +16,7 @@ import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
@@ -170,6 +171,7 @@ public class MainCamActivity extends AppCompatActivity implements CameraBridgeVi
         Mat rgba_frame = inputFrame.rgba();
         Mat gray_frame = inputFrame.gray();
         MatOfRect faces = new MatOfRect();
+        Mat crop;
 
         if (mAbsoluteFaceSize == 0) {
             int height = gray_frame.rows();
@@ -184,9 +186,26 @@ public class MainCamActivity extends AppCompatActivity implements CameraBridgeVi
 
 
         Rect[] facesArray = faces.toArray();
-        for (Rect rect : facesArray)
+        for (Rect rect : facesArray) {
             Imgproc.rectangle(rgba_frame, rect.tl(), rect.br(), FACE_RECT_COLOR, 3);
+            crop = new Mat(rgba_frame, rect);
+;
+            int width = rgba_frame.cols();
+            int height = rgba_frame.rows();
+            Mat largerImage = new Mat(width, height,crop.type());
+            //largerImage =
+            Mat mask = new Mat(crop.rows(), crop.cols(), CvType.CV_8U, Scalar.all(0));
+            crop.copyTo(largerImage, mask);
+            //return largerImage;
+            //Log.i(TAG,"LargerImage " + largerImage.rows() + " " + largerImage.cols());
+           // Rect roi = new Rect(0, 0, crop.cols(), 10);
+            //Mat sub =image.submat(roi);
 
+           // crop.copyTo(rgba_frame, )
+
+
+        }
+        Log.i(TAG,"frame " + rgba_frame.rows() + " " + rgba_frame.cols());
 
         return rgba_frame;
     }
