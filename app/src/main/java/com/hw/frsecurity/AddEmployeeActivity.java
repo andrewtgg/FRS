@@ -8,7 +8,6 @@ import android.widget.Spinner;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.ImageView;
-import
 
 // date related stuff
 import java.text.SimpleDateFormat;
