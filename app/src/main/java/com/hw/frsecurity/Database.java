@@ -19,14 +19,14 @@ public class Database extends SQLiteOpenHelper {
     SQLiteDatabase db;
 
     public Database(Context context, SQLiteDatabase.CursorFactory factory, int version) {
-        super(content, "EMPLOYEES.db", factory, version);
+        super(context, "EMPLOYEES.db", factory, version);
         ctx = context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + TABLE_NAME + "(ID INTEGER PRIMARY KEY, IMAGE BLOB, NAME TEXT, DEPARTMENT TEXT)");
-        Toast.makeText(ctx, "TABLE: " + TABLE_NAME + " VERSION: " + VERSION + " has been created.", Toast.LENGTH_LONG).show()
+        db.execSQL("CREATE TABLE " + TABLE_NAME + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, EMPLOYEE_ID INTEGER UNIQUE, IMAGE BLOB, NAME TEXT, DEPARTMENT TEXT, LAST_SEEN TEXT);");
+        Toast.makeText(ctx, "TABLE: " + TABLE_NAME + " VERSION: " + VERSION + " has been created.", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -38,32 +38,50 @@ public class Database extends SQLiteOpenHelper {
             VERSION = newVersion;
         }
     }
-
-    public void insert(int id, byte[] img, String name, String department) {
+    /*
+    public void insert(int id, byte[] img, String name, String department, String lastSeen) {
         ContentValues cv = new ContentValues();
         cv.put("ID", id);
         cv.put("IMAGE", img);
         cv.put("NAME", name);
         cv.put("DEPARTMENT", department);
+        cv.put("LAST_SEEN", lastSeen);
 
         db = getWritableDatabase();
         db.insert(TABLE_NAME, null, cv);
 
         // insert into EMPLOYEES(id,image,name,department) values ("id", "img", "name", "department")
-        db.execSQL("INSERT INTO " + TABLE_NAME + "(ID, IMAGE, NAME, DEPARTMENT) VALUES" + "(\"" + id + "\", \"" + img + "\", \"" + name + "\" , \"" + department + "\"");
+        db.execSQL("INSERT INTO " + TABLE_NAME + "(ID, IMAGE, NAME, DEPARTMENT, LAST_SEEN) VALUES" + "(\"" + id + "\", \"" + img + "\", \"" + name + "\" , \"" + department + "\", \"" + lastSeen + "\");");
+    }
+    */
+
+    public void insertEmployee(Employee employee) {
+
+        ContentValues cv = new ContentValues();
+        cv.put("EMPLOYEE_ID", employee.getId());
+        cv.put("IMAGE", employee.getImg());
+        cv.put("NAME", employee.getName());
+        cv.put("DEPARTMENT", employee.getDepartment());
+        cv.put("LAST_SEEN", employee.getLastSeen());
+
+        db = getWritableDatabase();
+        db.insert(TABLE_NAME, null, cv);
+
+        db.execSQL("INSERT OR IGNORE INTO " + TABLE_NAME + "(EMPLOYEE_ID, IMAGE, NAME, DEPARTMENT, LAST_SEEN) VALUES" + "(\"" + employee.getId() + "\", \"" + employee.getImg() + "\", \"" + employee.getName() + "\" , \"" + employee.getDepartment() + "\", \"" + employee.getLastSeen() + "\");");
     }
 
     // return all employees
     public Cursor getEmployees() {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_NAME + ";", null);
         return data;
     }
 
     // return employee with the matching ID
-    public Cursor getEmployee(int id) {
+    public Cursor getEmployeeById(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_NAM + " WHERE ID = ?", id);
+        String idToStr = String.valueOf(id);
+        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE ID = ?", new String[] { idToStr } );
         return data;
     }
 }
