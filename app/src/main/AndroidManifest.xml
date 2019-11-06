@@ -19,6 +19,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ViewEmployeesActivity"/>
         <activity android:name=".AccessLogsActivity" />
+        <activity android:name=".AddEmployeeActivity" />
         <activity android:name=".MainActivity">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
