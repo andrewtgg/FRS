@@ -26,9 +26,11 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
         </activity>
-        <activity android:name=".MainCamActivity">
+        <activity android:name=".MainCamActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".TrainCamActivity"
+            android:screenOrientation="portrait"/>
 
-        </activity>
     </application>
 
 </manifest>

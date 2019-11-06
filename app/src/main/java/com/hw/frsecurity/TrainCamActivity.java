@@ -1,46 +1,29 @@
 package com.hw.frsecurity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.SurfaceView;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Toast;
 
-import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
-import org.opencv.android.LoaderCallbackInterface;
-import org.opencv.android.OpenCVLoader;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
-import org.opencv.objdetect.CascadeClassifier;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import static org.opencv.imgproc.Imgproc.INTER_AREA;
+import static org.opencv.imgproc.Imgproc.INTER_CUBIC;
+import static org.opencv.imgproc.Imgproc.resize;
+
+public class TrainCamActivity extends CamActivity {
+    private final String TAG = "TrainCamActivity";
 
 
-public class MainCamActivity extends CamActivity {
-    private final String TAG = "MainCamActivity";
 
     @Override
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
         Mat rgba_frame = inputFrame.rgba();
         Mat gray_frame = inputFrame.gray();
         MatOfRect faces = new MatOfRect();
+        Mat resizeimage = new Mat();
         Mat crop;
 
         if (mAbsoluteFaceSize == 0) {
@@ -70,14 +53,22 @@ public class MainCamActivity extends CamActivity {
             //crop.copyTo(largerImage, mask);
             //return largerImage;
             //Log.i(TAG,"LargerImage " + largerImage.rows() + " " + largerImage.cols());
-           // Rect roi = new Rect(0, 0, crop.cols(), 10);
+            // Rect roi = new Rect(0, 0, crop.cols(), 10);
             //Mat sub =image.submat(roi);
 
-           // crop.copyTo(rgba_frame, )
+            // crop.copyTo(rgba_frame, )
 
+            Size scaleSize = new Size(width,height);
+            resize(crop, resizeimage, scaleSize , 0, 0, INTER_CUBIC);
+            Log.i(TAG,"resize " + resizeimage.rows() + " " + resizeimage.cols());
+            return resizeimage;
 
         }
+        Log.i(TAG,"frame " + rgba_frame.rows() + " " + rgba_frame.cols());
 
+        /*if (resizeimage != null) {
+            return resizeimage;
+        }*/
         return rgba_frame;
     }
 }
