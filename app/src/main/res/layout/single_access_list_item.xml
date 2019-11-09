@@ -9,13 +9,12 @@
         android:id="@+id/employee_item_img"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_margin="10dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
-        android:background="#000000"
-        android:padding="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@android:color/transparent"
+        android:padding="3dp"
         tools:srcCompat="@tools:sample/avatars[2]" />
 
     <TextView
@@ -27,7 +26,9 @@
         android:layout_marginLeft="15dp"
         android:layout_marginBottom="95dp"
         android:layout_toRightOf="@id/employee_item_img"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/access_log_item_id"
@@ -38,7 +39,9 @@
         android:layout_marginLeft="15dp"
         android:layout_marginBottom="65dp"
         android:layout_toRightOf="@id/employee_item_img"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/access_log_item_time_id"
@@ -49,7 +52,9 @@
         android:layout_marginLeft="15dp"
         android:layout_marginBottom="35dp"
         android:layout_toRightOf="@id/employee_item_img"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/access_log_item_date_id"
@@ -60,6 +65,8 @@
         android:layout_marginLeft="15dp"
         android:layout_marginBottom="5dp"
         android:layout_toRightOf="@id/employee_item_img"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
 
 </RelativeLayout>

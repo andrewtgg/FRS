@@ -2,6 +2,7 @@ package com.hw.frsecurity;
 
 
 // This is just for testing and see if its feasible to abstract the list adapter to a more generic one.
+// found it from some dude on github
 
 import android.app.Activity;
 import android.view.View;
@@ -47,5 +48,6 @@ public class GenericListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         return convertView;
     }
+
 
 }

@@ -4,15 +4,26 @@ public class ActivityLogItem {
 
     private int id;
     private byte[] img;
-    private String dateSeen;
     // Status is a boolean variable (1 or 0)
     private int status;
 
-    public ActivityLogItem(int newId, byte[] newImg, String newDateSeen, int newStatus) {
+    private String dateSeen;
+    private String timeSeen;
+
+    public ActivityLogItem(int newId, byte[] newImg, String newDateSeen, String newTimeSeen, int newStatus) {
         this.id = newId;
         this.img = newImg;
-        this.dateSeen = newDateSeen;
         this.status = newStatus;
+        this.dateSeen = newDateSeen;
+        this.timeSeen = newTimeSeen;
+    }
+
+    public String getTimeSeen() {
+        return timeSeen;
+    }
+
+    public void setTimeSeen(String timeSeen) {
+        this.timeSeen = timeSeen;
     }
 
     public int getId() {
