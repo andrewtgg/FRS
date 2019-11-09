@@ -14,6 +14,7 @@ public class Database extends SQLiteOpenHelper {
 
     // DB Initilization variables
     static String TABLE_NAME = "EMPLOYEES";
+    static String LOG_TABLE = "ACTIVITY_LOG";
     static int VERSION = 1;
 
     SQLiteDatabase db;
@@ -26,7 +27,9 @@ public class Database extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE_NAME + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, EMPLOYEE_ID INTEGER UNIQUE, IMAGE BLOB, NAME TEXT, DEPARTMENT TEXT, LAST_SEEN TEXT);");
-        Toast.makeText(ctx, "TABLE: " + TABLE_NAME + " VERSION: " + VERSION + " has been created.", Toast.LENGTH_LONG).show();
+        db.execSQL("CREATE TABLE " + LOG_TABLE + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, EMPLOYEE_ID INTEGER, IMAGE BLOB, DATE_SEEN TEXT, STATUS INTEGER);");
+        Toast.makeText(ctx, "TABLE " + TABLE_NAME + " AND " + LOG_TABLE + " has been created.", Toast.LENGTH_LONG).show();
+        //Toast.makeText(ctx, "TABLE: " + TABLE_NAME + " VERSION: " + VERSION + " has been created.", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -67,7 +70,18 @@ public class Database extends SQLiteOpenHelper {
         db = getWritableDatabase();
         db.insert(TABLE_NAME, null, cv);
 
-        db.execSQL("INSERT OR IGNORE INTO " + TABLE_NAME + "(EMPLOYEE_ID, IMAGE, NAME, DEPARTMENT, LAST_SEEN) VALUES" + "(\"" + employee.getId() + "\", \"" + employee.getImg() + "\", \"" + employee.getName() + "\" , \"" + employee.getDepartment() + "\", \"" + employee.getLastSeen() + "\");");
+        // db.execSQL("INSERT OR IGNORE INTO " + TABLE_NAME + "(EMPLOYEE_ID, IMAGE, NAME, DEPARTMENT, LAST_SEEN) VALUES" + "(\"" + employee.getId() + "\", \"" + employee.getImg() + "\", \"" + employee.getName() + "\" , \"" + employee.getDepartment() + "\", \"" + employee.getLastSeen() + "\");");
+    }
+
+    public void insertLogItem(ActivityLogItem activityLogItem) {
+        ContentValues cv = new ContentValues();
+        cv.put("EMPLOYEE_ID", activityLogItem.getId());
+        cv.put("IMAGE", activityLogItem.getImg());
+        cv.put("DATE_SEEN", activityLogItem.getDateSeen());
+        cv.put("STATUS", activityLogItem.getStatus());
+
+        db = getWritableDatabase();
+        db.insert(LOG_TABLE, null, cv);
     }
 
     // return all employees
@@ -82,6 +96,18 @@ public class Database extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         String idToStr = String.valueOf(id);
         Cursor data = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE ID = ?", new String[] { idToStr } );
+        return data;
+    }
+
+    // return all logs
+    public Cursor getActivityLogs() {
+        // testing purposes
+        // SQLiteDatabase db = this.getReadableDatabase();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        // should use db.query
+        Cursor data = db.query(LOG_TABLE,null,null,null,null,null, "ID ASC");
+        //Cursor data = db.rawQuery("SELECT * FROM " + LOG_TABLE + ";", null);
         return data;
     }
 }

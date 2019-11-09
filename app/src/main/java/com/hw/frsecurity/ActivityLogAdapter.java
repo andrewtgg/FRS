@@ -3,22 +3,21 @@ package com.hw.frsecurity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-// Probably should extract this to handle more listviews instead of just employee
+public class ActivityLogAdapter extends BaseAdapter {
 
-public class ListAdapter extends BaseAdapter {
 
     Context context;
-    private ArrayList<Employee> A = new ArrayList<>();
+    private ArrayList<ActivityLogItem> A = new ArrayList<>();
     // private final String [] employeeId;
     // private final String [] employeeName;
     // private final String [] employeeLastSeen;
@@ -26,20 +25,10 @@ public class ListAdapter extends BaseAdapter {
 
 
     // Experimenting
-    public ListAdapter(Context context, ArrayList<Employee> arr) {
+    public ActivityLogAdapter(Context context, ArrayList<ActivityLogItem> arr) {
         this.context = context;
-        this.A = (ArrayList<Employee>) arr.clone();
+        this.A = (ArrayList<ActivityLogItem>) arr.clone();
     }
-    /*
-    public ListAdapter(Context context, String [] employeeId, String [] employeeName, String [] employeeLastSeen, int[] employeeImg){
-        //super(context, R.layout.single_list_app_item, utilsArrayList);
-        this.context = context;
-        this.employeeId = employeeId;
-        this.employeeName = employeeName;
-        this.employeeLastSeen = employeeLastSeen;
-        this.employeeImg =  employeeImg;
-    }
-    */
 
     @Override
     public int getCount() {
@@ -68,25 +57,32 @@ public class ListAdapter extends BaseAdapter {
 
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(context);
-            convertView = inflater.inflate(R.layout.single_employee_list_item, parent, false);
-            viewHolder.employeeId = convertView.findViewById(R.id.employee_item_id_tv);
-            viewHolder.employeeName = convertView.findViewById(R.id.employee_item_name_tv);
-            viewHolder.employeeLastSeen = convertView.findViewById(R.id.employee_item_last_seen_tv);
+            convertView = inflater.inflate(R.layout.single_access_list_item, parent, false);
+
+            viewHolder.employeeId = convertView.findViewById(R.id.access_log_item_id);
+            viewHolder.employeeStatus = convertView.findViewById(R.id.access_log_item_status_id);
+            viewHolder.employeeTimeSeen = convertView.findViewById(R.id.access_log_item_time_id);
+            viewHolder.employeeDateSeen = convertView.findViewById(R.id.access_log_item_date_id);
             viewHolder.employeeImg = convertView.findViewById(R.id.employee_item_img);
 
-            result=convertView;
+            result = convertView;
 
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
-            result=convertView;
+            result = convertView;
         }
 
-        // String employeeId = String.valueOf(A.get(position).getId());
-
-        viewHolder.employeeId.setText(String.valueOf(A.get(position).getId()));
-        viewHolder.employeeName.setText(A.get(position).getName());
-        viewHolder.employeeLastSeen.setText(A.get(position).getLastSeen());
+        String employeeID = Integer.toString(A.get(position).getId());
+        viewHolder.employeeId.setText("ID: " + employeeID);
+        if (A.get(position).getStatus() == 0) {
+            viewHolder.employeeImg.setBackgroundColor(Color.parseColor("#FF0000"));
+            viewHolder.employeeStatus.setText("Status: Unidentified");
+        } else {
+            viewHolder.employeeStatus.setText("Status: Identified");
+        }
+        viewHolder.employeeTimeSeen.setText("Time: " + A.get(position).getTimeSeen());
+        viewHolder.employeeDateSeen.setText("Date: " + A.get(position).getDateSeen());
         // decodes byte array into image
         Bitmap img = BitmapFactory.decodeByteArray(A.get(position).getImg(), 0, A.get(position).getImg().length);
         viewHolder.employeeImg.setImageBitmap(img);
@@ -98,10 +94,13 @@ public class ListAdapter extends BaseAdapter {
     private static class ViewHolder {
 
         TextView employeeId;
-        TextView employeeName;
-        TextView employeeLastSeen;
+        TextView employeeStatus;
+        TextView employeeTimeSeen;
+        TextView employeeDateSeen;
         ImageView employeeImg;
 
     }
+
+
 
 }
