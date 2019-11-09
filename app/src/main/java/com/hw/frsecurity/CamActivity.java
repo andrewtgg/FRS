@@ -3,6 +3,7 @@ package com.hw.frsecurity;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
@@ -110,6 +111,11 @@ public abstract class CamActivity extends AppCompatActivity implements CameraBri
         openCvCameraView.setCameraIndex(CameraBridgeViewBase.CAMERA_ID_FRONT);
 
         openCvCameraView.setVisibility(SurfaceView.VISIBLE);
+        openCvCameraView.enableFpsMeter();
+
+
+        openCvCameraView.setOrientation(getResources().getConfiguration().orientation);
+
 
         openCvCameraView.setCvCameraViewListener(this);
 
