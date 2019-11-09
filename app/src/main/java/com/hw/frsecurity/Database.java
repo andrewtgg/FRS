@@ -67,7 +67,7 @@ public class Database extends SQLiteOpenHelper {
         db = getWritableDatabase();
         db.insert(TABLE_NAME, null, cv);
 
-        db.execSQL("INSERT OR IGNORE INTO " + TABLE_NAME + "(EMPLOYEE_ID, IMAGE, NAME, DEPARTMENT, LAST_SEEN) VALUES" + "(\"" + employee.getId() + "\", \"" + employee.getImg() + "\", \"" + employee.getName() + "\" , \"" + employee.getDepartment() + "\", \"" + employee.getLastSeen() + "\");");
+        // db.execSQL("INSERT OR IGNORE INTO " + TABLE_NAME + "(EMPLOYEE_ID, IMAGE, NAME, DEPARTMENT, LAST_SEEN) VALUES" + "(\"" + employee.getId() + "\", \"" + employee.getImg() + "\", \"" + employee.getName() + "\" , \"" + employee.getDepartment() + "\", \"" + employee.getLastSeen() + "\");");
     }
 
     // return all employees
