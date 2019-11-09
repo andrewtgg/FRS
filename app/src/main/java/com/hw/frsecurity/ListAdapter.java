@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+// Probably should extract this to handle more listviews instead of just employee
 
 public class ListAdapter extends BaseAdapter {
 
