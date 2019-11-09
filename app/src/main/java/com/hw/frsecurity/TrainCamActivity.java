@@ -26,6 +26,7 @@ public class TrainCamActivity extends CamActivity {
         Mat resizeimage = new Mat();
         Mat crop;
 
+
         if (mAbsoluteFaceSize == 0) {
             int height = gray_frame.rows();
             if (Math.round(height * mRelativeFaceSize) > 0) {
