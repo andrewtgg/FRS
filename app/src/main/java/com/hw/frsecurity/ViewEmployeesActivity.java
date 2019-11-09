@@ -65,6 +65,9 @@ public class ViewEmployeesActivity extends AppCompatActivity {
         /*          */
 
         lView = findViewById(R.id.employee_list);
+
+        // GenericListAdapter test = new GenericListAdapter(ViewEmployeesActivity.this, R.id.employee_list, allEmployees );
+
         lAdapter = new ListAdapter(ViewEmployeesActivity.this, allEmployees);
 
         lView.setAdapter(lAdapter);
