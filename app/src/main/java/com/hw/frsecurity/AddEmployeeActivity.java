@@ -1,5 +1,6 @@
 package com.hw.frsecurity;
 
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
@@ -47,7 +48,6 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
         newEmployeeDepartmentSpinner.setAdapter(adapter);
 
-
         findViewById(R.id.add_new_employee_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,6 +78,8 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
                     Toast.makeText(AddEmployeeActivity.this, "Inserted into Database!", Toast.LENGTH_LONG).show();
 
+                    startActivity(new Intent(AddEmployeeActivity.this, ViewEmployeesActivity.class));
+                    finish();
                 }
             }
         });

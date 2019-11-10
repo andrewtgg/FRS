@@ -101,8 +101,6 @@ public class Database extends SQLiteOpenHelper {
 
     // return all logs
     public Cursor getActivityLogs() {
-        // testing purposes
-        // SQLiteDatabase db = this.getReadableDatabase();
 
         SQLiteDatabase db = this.getWritableDatabase();
         // should use db.query
