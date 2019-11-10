@@ -15,14 +15,8 @@ import java.util.ArrayList;
 
 public class ActivityLogAdapter extends BaseAdapter {
 
-
     Context context;
     private ArrayList<ActivityLogItem> A = new ArrayList<>();
-    // private final String [] employeeId;
-    // private final String [] employeeName;
-    // private final String [] employeeLastSeen;
-    // private final int [] employeeImg;
-
 
     // Experimenting
     public ActivityLogAdapter(Context context, ArrayList<ActivityLogItem> arr) {
