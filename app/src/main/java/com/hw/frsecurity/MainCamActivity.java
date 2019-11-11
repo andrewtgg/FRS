@@ -33,8 +33,17 @@ import java.io.IOException;
 import java.io.InputStream;
 
 
+
+
 public class MainCamActivity extends CamActivity {
     private final String TAG = "MainCamActivity";
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState, R.layout.activity_main_cam);
+
+    }
 
     @Override
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {

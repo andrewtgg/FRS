@@ -1,8 +1,15 @@
 package com.hw.frsecurity;
 
+import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import org.opencv.android.CameraBridgeViewBase;
+import org.opencv.android.Utils;
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
@@ -17,6 +24,23 @@ public class TrainCamActivity extends CamActivity {
     private final String TAG = "TrainCamActivity";
 
 
+    private int numfaces = 0;
+    private Rect[] facesArray;
+
+    Mat detected_face;
+
+    ImageView preview_face;
+
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState, R.layout.activity_train_cam);
+        preview_face = findViewById(R.id.preview_face);
+    }
+
+
 
     @Override
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
@@ -24,7 +48,7 @@ public class TrainCamActivity extends CamActivity {
         Mat gray_frame = inputFrame.gray();
         MatOfRect faces = new MatOfRect();
         Mat resizeimage = new Mat();
-        Mat crop;
+        Mat crop = null;
 
 
         if (mAbsoluteFaceSize == 0) {
@@ -39,7 +63,8 @@ public class TrainCamActivity extends CamActivity {
                     new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
 
 
-        Rect[] facesArray = faces.toArray();
+        facesArray = faces.toArray();
+        numfaces = facesArray.length;
         for (Rect rect : facesArray) {
             Imgproc.rectangle(rgba_frame, rect.tl(), rect.br(), FACE_RECT_COLOR, 3);
             crop = new Mat(rgba_frame, rect);
@@ -62,14 +87,51 @@ public class TrainCamActivity extends CamActivity {
             Size scaleSize = new Size(width,height);
             resize(crop, resizeimage, scaleSize , 0, 0, INTER_CUBIC);
             Log.i(TAG,"resize " + resizeimage.rows() + " " + resizeimage.cols());
-            return resizeimage;
+            //return resizeimage;
 
         }
-        Log.i(TAG,"frame " + rgba_frame.rows() + " " + rgba_frame.cols());
+
+        if (numfaces == 1) {
+            detected_face = crop;
+        }
 
         /*if (resizeimage != null) {
             return resizeimage;
         }*/
         return rgba_frame;
+    }
+
+    public void take_picture(View view) {
+        Log.i(TAG, "Take a screenshot");
+        System.out.println("faces: " + numfaces);
+
+        if(numfaces == 0) {
+            Toast.makeText(this, "No face detected!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(numfaces > 1) {
+            Toast.makeText(this, "Multiple faces detected. Please try again.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(detected_face != null) {
+
+            Mat dface = mirror(detected_face);
+
+            int w = preview_face.getWidth();
+            int h = preview_face.getHeight();
+            System.out.println(w + " " + h);
+            Size scaleSize = new Size(w,h);
+
+            Mat resized_face = new Mat();
+            resize(dface, resized_face, scaleSize , 0, 0, INTER_CUBIC);
+
+            Bitmap img = Bitmap.createBitmap(resized_face.cols(), resized_face.rows(),Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(resized_face,img);
+            preview_face.setImageBitmap(img);
+        }
+
+
+
     }
 }

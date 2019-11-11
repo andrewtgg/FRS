@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
@@ -31,6 +33,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import static com.hw.frsecurity.R.layout.activity_main_cam;
 
 public abstract class CamActivity extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener2 {
     private static final int CAMERA_PERMISSION_REQUEST = 1;
@@ -46,6 +50,11 @@ public abstract class CamActivity extends AppCompatActivity implements CameraBri
     public float mRelativeFaceSize = 0.2f;
     public int mAbsoluteFaceSize = 0;
     public static final Scalar FACE_RECT_COLOR         = new Scalar(255, 0, 0, 255);
+
+    public int layout_view;
+
+
+
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -92,10 +101,12 @@ public abstract class CamActivity extends AppCompatActivity implements CameraBri
         }
     };
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.e(TAG,"Should not have called this onCreate.");
+    }
+    protected void onCreate(Bundle savedInstanceState, int v) {
         super.onCreate(savedInstanceState);
 
 
@@ -103,10 +114,7 @@ public abstract class CamActivity extends AppCompatActivity implements CameraBri
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-
-        setContentView(R.layout.activity_main_cam);
-
-
+        setContentView(v);
         openCvCameraView = findViewById(R.id.main_surface);
         openCvCameraView.setCameraIndex(CameraBridgeViewBase.CAMERA_ID_FRONT);
 
@@ -173,4 +181,11 @@ public abstract class CamActivity extends AppCompatActivity implements CameraBri
     }
     @Override
     public abstract Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame);
+
+    public Mat mirror(Mat m) {
+        Mat mirrored = new Mat();
+        Core.flip(m, mirrored, 1);
+        return mirrored;
+
+    }
 }
