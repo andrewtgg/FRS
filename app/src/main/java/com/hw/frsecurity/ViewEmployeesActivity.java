@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class ViewEmployeesActivity extends AppCompatActivity {
+
+    private static final String TAG = "MyActivity";
 
     Database db;
 
@@ -70,6 +73,8 @@ public class ViewEmployeesActivity extends AppCompatActivity {
 
         lAdapter = new ListAdapter(ViewEmployeesActivity.this, allEmployees);
 
+        Log.d(TAG, "adapter set");
+
         lView.setAdapter(lAdapter);
 
         lView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -83,10 +88,25 @@ public class ViewEmployeesActivity extends AppCompatActivity {
         findViewById(R.id.add_employee_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ViewEmployeesActivity.this, AddEmployeeActivity.class));
+                startActivityForResult(new Intent(ViewEmployeesActivity.this, AddEmployeeActivity.class), 0);
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK){
+            Log.d(TAG, "onActivityResult: ");
+
+            recreate();
+        }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
     }
 
     /* Note: This is just to create mock data */

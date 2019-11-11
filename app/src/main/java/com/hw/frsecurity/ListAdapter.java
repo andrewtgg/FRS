@@ -95,6 +95,11 @@ public class ListAdapter extends BaseAdapter {
         return convertView;
     }
 
+    public void swapItems(ArrayList<Employee> items) {
+        this.A = items;
+        notifyDataSetChanged();
+    }
+
     private static class ViewHolder {
 
         TextView employeeId;

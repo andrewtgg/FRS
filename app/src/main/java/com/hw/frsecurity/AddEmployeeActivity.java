@@ -1,5 +1,6 @@
 package com.hw.frsecurity;
 
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
@@ -42,7 +43,7 @@ public class AddEmployeeActivity extends AppCompatActivity {
         // Adding values to spinner
         newEmployeeDepartmentSpinner = findViewById(R.id.add_employee_department_spinner);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.departments_array, android.R.layout.simple_spinner_item);
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.departments_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         newEmployeeDepartmentSpinner.setAdapter(adapter);
@@ -76,7 +77,12 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
                     db.insertEmployee(newEmployee);
 
+                    adapter.notifyDataSetChanged();
+
                     Toast.makeText(AddEmployeeActivity.this, "Inserted into Database!", Toast.LENGTH_LONG).show();
+                    Intent i=new Intent();
+                    setResult(RESULT_OK,i);
+                    finish();
 
                 }
             }
