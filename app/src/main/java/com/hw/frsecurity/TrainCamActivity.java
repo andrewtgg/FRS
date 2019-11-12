@@ -35,7 +35,7 @@ public class TrainCamActivity extends CamActivity {
 
     ImageView preview_face;
 
-     train_faces;
+    private ArrayList<Mat> train_faces = new ArrayList<Mat>();
 
 
 
