@@ -43,7 +43,7 @@ public class AddEmployeeActivity extends AppCompatActivity {
         // Adding values to spinner
         newEmployeeDepartmentSpinner = findViewById(R.id.add_employee_department_spinner);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.departments_array, android.R.layout.simple_spinner_item);
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.departments_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         newEmployeeDepartmentSpinner.setAdapter(adapter);
@@ -76,10 +76,16 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
                     db.insertEmployee(newEmployee);
 
-                    Toast.makeText(AddEmployeeActivity.this, "Inserted into Database!", Toast.LENGTH_LONG).show();
+                    adapter.notifyDataSetChanged();
 
+                    Toast.makeText(AddEmployeeActivity.this, "Inserted into Database!", Toast.LENGTH_LONG).show();
+                    Intent i=new Intent();
+                    setResult(RESULT_OK,i);
+                    finish();
+                    /*
                     startActivity(new Intent(AddEmployeeActivity.this, ViewEmployeesActivity.class));
                     finish();
+                    */
                 }
             }
         });

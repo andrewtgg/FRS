@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -13,6 +14,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class ViewEmployeesActivity extends AppCompatActivity {
+
+    private static final String TAG = "MyActivity";
 
     Database db;
 
@@ -45,6 +48,8 @@ public class ViewEmployeesActivity extends AppCompatActivity {
 
         lAdapter = new ListAdapter(ViewEmployeesActivity.this, allEmployees);
 
+        Log.d(TAG, "adapter set");
+
         lView.setAdapter(lAdapter);
 
         lView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -58,9 +63,17 @@ public class ViewEmployeesActivity extends AppCompatActivity {
         findViewById(R.id.add_employee_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ViewEmployeesActivity.this, AddEmployeeActivity.class));
+                startActivityForResult(new Intent(ViewEmployeesActivity.this, AddEmployeeActivity.class), 0);
             }
         });
 
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK){
+            Log.d(TAG, "onActivityResult: ");
+            recreate();
+        }
     }
 }
