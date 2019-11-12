@@ -11,7 +11,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 // Probably should extract this to handle more listviews instead of just employee
 
@@ -19,10 +22,6 @@ public class ListAdapter extends BaseAdapter {
 
     Context context;
     private ArrayList<Employee> A = new ArrayList<>();
-    // private final String [] employeeId;
-    // private final String [] employeeName;
-    // private final String [] employeeLastSeen;
-    // private final int [] employeeImg;
 
 
     // Experimenting
@@ -30,16 +29,6 @@ public class ListAdapter extends BaseAdapter {
         this.context = context;
         this.A = (ArrayList<Employee>) arr.clone();
     }
-    /*
-    public ListAdapter(Context context, String [] employeeId, String [] employeeName, String [] employeeLastSeen, int[] employeeImg){
-        //super(context, R.layout.single_list_app_item, utilsArrayList);
-        this.context = context;
-        this.employeeId = employeeId;
-        this.employeeName = employeeName;
-        this.employeeLastSeen = employeeLastSeen;
-        this.employeeImg =  employeeImg;
-    }
-    */
 
     @Override
     public int getCount() {
@@ -71,7 +60,8 @@ public class ListAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.single_employee_list_item, parent, false);
             viewHolder.employeeId = convertView.findViewById(R.id.employee_item_id_tv);
             viewHolder.employeeName = convertView.findViewById(R.id.employee_item_name_tv);
-            viewHolder.employeeLastSeen = convertView.findViewById(R.id.employee_item_last_seen_tv);
+            viewHolder.employeeTimeSeen = convertView.findViewById(R.id.employee_item_time_tv);
+            viewHolder.employeeDateSeen = convertView.findViewById(R.id.employee_item_date_tv);
             viewHolder.employeeImg = convertView.findViewById(R.id.employee_item_img);
 
             result=convertView;
@@ -83,10 +73,30 @@ public class ListAdapter extends BaseAdapter {
         }
 
         // String employeeId = String.valueOf(A.get(position).getId());
+        viewHolder.employeeId.setText("ID: " + String.valueOf(A.get(position).getId()));
+        viewHolder.employeeName.setText("Name: " + A.get(position).getName());
 
-        viewHolder.employeeId.setText(String.valueOf(A.get(position).getId()));
-        viewHolder.employeeName.setText(A.get(position).getName());
-        viewHolder.employeeLastSeen.setText(A.get(position).getLastSeen());
+        // Date related stuff
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+        SimpleDateFormat dateFmt = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat timeFmt = new SimpleDateFormat("hh:mm");
+
+        Date convertedDate = new Date();
+
+        try {
+            convertedDate = formatter.parse(A.get(position).getLastSeen());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (convertedDate != null) {
+            String dateOnly = dateFmt.format(convertedDate);
+            String timeOnly = timeFmt.format(convertedDate);
+
+            viewHolder.employeeTimeSeen.setText("Time seen: " + timeOnly);
+            viewHolder.employeeDateSeen.setText("Date seen: " + dateOnly);
+        }
+
         // decodes byte array into image
         Bitmap img = BitmapFactory.decodeByteArray(A.get(position).getImg(), 0, A.get(position).getImg().length);
         viewHolder.employeeImg.setImageBitmap(img);
@@ -104,7 +114,8 @@ public class ListAdapter extends BaseAdapter {
 
         TextView employeeId;
         TextView employeeName;
-        TextView employeeLastSeen;
+        TextView employeeTimeSeen;
+        TextView employeeDateSeen;
         ImageView employeeImg;
 
     }

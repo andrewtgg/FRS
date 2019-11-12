@@ -13,11 +13,11 @@
 
     <TextView
         android:id="@+id/employee_item_id_tv"
-        android:layout_width="217dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/employee_item_img"
-        android:layout_marginLeft="45dp"
-        android:layout_marginBottom="109dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginBottom="125dp"
         android:layout_toRightOf="@id/employee_item_img"
         android:text="TextView"
         android:textColor="@android:color/black"
@@ -25,61 +25,37 @@
 
     <TextView
         android:id="@+id/employee_item_name_tv"
-        android:layout_width="190dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/employee_item_img"
-        android:layout_marginLeft="75dp"
-        android:layout_marginBottom="66dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginBottom="85dp"
         android:layout_toRightOf="@id/employee_item_img"
         android:text="TextView"
         android:textColor="@android:color/black"
         android:textSize="17sp" />
 
     <TextView
-        android:id="@+id/employee_item_last_seen_tv"
-        android:layout_width="160dp"
+        android:id="@+id/employee_item_time_tv"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/employee_item_img"
-        android:layout_marginLeft="101dp"
-        android:layout_marginBottom="22dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginBottom="45dp"
         android:layout_toRightOf="@id/employee_item_img"
         android:text="TextView"
-        android:textColor="@android:color/black"
-        android:textSize="16.5sp" />
-
-    <TextView
-        android:id="@+id/employee_item_name_label"
-        android:layout_width="67dp"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/employee_item_img"
-        android:layout_marginLeft="23dp"
-        android:layout_marginBottom="66dp"
-        android:layout_toRightOf="@id/employee_item_img"
-        android:text="Name:"
         android:textColor="@android:color/black"
         android:textSize="17sp" />
 
     <TextView
-        android:id="@+id/employee_item_last_seen_label"
-        android:layout_width="wrap_content"
+        android:id="@+id/employee_item_date_tv"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/employee_item_img"
-        android:layout_marginLeft="23dp"
-        android:layout_marginBottom="22dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginBottom="5dp"
         android:layout_toRightOf="@id/employee_item_img"
-        android:text="Last Seen:"
-        android:textColor="@android:color/black"
-        android:textSize="16.5sp" />
-
-    <TextView
-        android:id="@+id/employee_item_id_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/employee_item_img"
-        android:layout_marginLeft="23dp"
-        android:layout_marginBottom="109dp"
-        android:layout_toRightOf="@id/employee_item_img"
-        android:text="ID:"
+        android:text="TextView"
         android:textColor="@android:color/black"
         android:textSize="17sp" />
 

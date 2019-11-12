@@ -48,7 +48,6 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
         newEmployeeDepartmentSpinner.setAdapter(adapter);
 
-
         findViewById(R.id.add_new_employee_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +82,10 @@ public class AddEmployeeActivity extends AppCompatActivity {
                     Intent i=new Intent();
                     setResult(RESULT_OK,i);
                     finish();
-
+                    /*
+                    startActivity(new Intent(AddEmployeeActivity.this, ViewEmployeesActivity.class));
+                    finish();
+                    */
                 }
             }
         });
