@@ -16,6 +16,10 @@ import org.opencv.core.Rect;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
+
+
+import java.util.ArrayList;
+
 import static org.opencv.imgproc.Imgproc.INTER_AREA;
 import static org.opencv.imgproc.Imgproc.INTER_CUBIC;
 import static org.opencv.imgproc.Imgproc.resize;
@@ -30,6 +34,8 @@ public class TrainCamActivity extends CamActivity {
     Mat detected_face;
 
     ImageView preview_face;
+
+     train_faces;
 
 
 
@@ -129,6 +135,8 @@ public class TrainCamActivity extends CamActivity {
             Bitmap img = Bitmap.createBitmap(resized_face.cols(), resized_face.rows(),Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(resized_face,img);
             preview_face.setImageBitmap(img);
+
+            train_faces.add(dface);
         }
 
 
