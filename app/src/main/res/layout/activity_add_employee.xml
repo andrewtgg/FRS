@@ -11,7 +11,8 @@
         android:layout_height="280dp"
         android:layout_gravity="center"
         android:layout_margin="25dp"
-        tools:srcCompat="@tools:sample/avatars[14]" />
+        tools:srcCompat="@tools:sample/avatars[14]"
+        android:onClick="open_train_Cam"/>
 
     <TextView
         android:id="@+id/textView"

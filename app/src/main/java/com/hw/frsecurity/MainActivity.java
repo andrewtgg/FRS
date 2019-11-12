@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button_main_cam).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View  v) {
-                startActivity(new Intent(MainActivity.this, TrainCamActivity.class));
+                startActivity(new Intent(MainActivity.this, MainCamActivity.class));
             }
         });
 

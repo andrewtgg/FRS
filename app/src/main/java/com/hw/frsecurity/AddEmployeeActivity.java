@@ -96,4 +96,8 @@ public class AddEmployeeActivity extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
         return outputStream.toByteArray();
     }
+
+    public void open_train_Cam(View view) {
+        startActivity(new Intent(this, TrainCamActivity.class));
+    }
 }
