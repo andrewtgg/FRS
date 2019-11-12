@@ -7,28 +7,37 @@
     android:id="@+id/linearLayout"
     android:gravity="center_vertical"
     android:orientation="vertical"
-    tools:context=".MainActivity"
-    >
-
-
+    tools:context=".MainActivity" >
 
 
     <Button
         android:id="@+id/button_main_cam"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="35dp"
+        android:layout_weight=".05"
+        android:background="@null"
+        android:drawableTop="@drawable/camera"
         android:text="@string/open_main_camera" />
 
     <Button
         android:id="@+id/button_access_logs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="35dp"
+        android:layout_weight=".05"
+        android:background="@null"
+        android:drawableTop="@drawable/logs"
         android:text="@string/access_logs" />
 
     <Button
         android:id="@+id/button_view_employees"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="35dp"
+        android:layout_weight=".05"
+        android:background="@null"
+        android:drawableTop="@drawable/employee"
         android:text="@string/view_employees" />
 
 
