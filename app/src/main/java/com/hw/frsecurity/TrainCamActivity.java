@@ -1,5 +1,7 @@
 package com.hw.frsecurity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +27,8 @@ import static org.opencv.imgproc.Imgproc.INTER_CUBIC;
 import static org.opencv.imgproc.Imgproc.resize;
 
 public class TrainCamActivity extends CamActivity {
+
+    public static String EMPLOYEE_PIC = "EMPLOYEE PIC";
     private final String TAG = "TrainCamActivity";
 
 
@@ -139,7 +143,21 @@ public class TrainCamActivity extends CamActivity {
             train_faces.add(dface);
         }
 
+        int num_pictures = train_faces.size();
+        Toast.makeText(this, "There are " + num_pictures + " faces", Toast.LENGTH_SHORT).show();
 
+        if(num_pictures >= 3) {
+            Intent resultIntent = new Intent();
+
+            Mat returned_face = train_faces.get(0); //return the first face picture
+
+            Bitmap img = Bitmap.createBitmap(returned_face.cols(), returned_face.rows(),Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(returned_face,img);
+
+            resultIntent.putExtra(EMPLOYEE_PIC, img);
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();
+        }
 
     }
 }
