@@ -54,12 +54,12 @@ public class ViewEmployeesActivity extends AppCompatActivity {
 
         lView.setAdapter(lAdapter);
 
-        lView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*lView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(ViewEmployeesActivity.this, "Made it!", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
 
         findViewById(R.id.add_employee_btn).setOnClickListener(new View.OnClickListener() {

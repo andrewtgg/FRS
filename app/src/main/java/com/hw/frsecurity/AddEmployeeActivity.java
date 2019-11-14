@@ -1,5 +1,6 @@
 package com.hw.frsecurity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import java.util.Locale;
 
 import android.graphics.Bitmap;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.ByteArrayOutputStream;
@@ -27,12 +29,17 @@ public class AddEmployeeActivity extends AppCompatActivity {
     Spinner newEmployeeDepartmentSpinner;
     ImageView newEmployeeImage;
     Database db;
+    private Bitmap employee_img;
+    private static boolean real_image = false;
+
+    static int CODE_RETURN_PIC = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_add_employee);
+
 
         // database init
         db = new Database(this, null, 3);
@@ -83,6 +90,7 @@ public class AddEmployeeActivity extends AppCompatActivity {
                     Toast.makeText(AddEmployeeActivity.this, "Inserted into Database!", Toast.LENGTH_LONG).show();
                     Intent i=new Intent();
                     setResult(RESULT_OK,i);
+                    real_image = false;
                     finish();
                     /*
                     startActivity(new Intent(AddEmployeeActivity.this, ViewEmployeesActivity.class));
@@ -91,7 +99,16 @@ public class AddEmployeeActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //if employee img exists, set it again
+        if (savedInstanceState != null){
+            if(real_image) {
+                employee_img = savedInstanceState.getParcelable("employee_img");
+                newEmployeeImage.setImageBitmap(employee_img);
+            }
+        }
     }
+    
 
     private byte[] getBitmapAsByteArray(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -100,6 +117,25 @@ public class AddEmployeeActivity extends AppCompatActivity {
     }
 
     public void open_train_Cam(View view) {
-        startActivity(new Intent(this, TrainCamActivity.class));
+        Intent i = new Intent(this, TrainCamActivity.class);
+        startActivityForResult(i, CODE_RETURN_PIC);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CODE_RETURN_PIC){
+            if (resultCode == Activity.RESULT_OK) {
+                    employee_img = data.getParcelableExtra(TrainCamActivity.EMPLOYEE_PIC);
+                    newEmployeeImage.setImageBitmap(employee_img);
+                    real_image = true;
+            }
+        }
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("employee_img",employee_img);
     }
 }

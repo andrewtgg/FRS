@@ -35,12 +35,15 @@
             android:theme="@style/generalnotitle"
             android:screenOrientation="portrait">
         </activity>
+
         <activity
             android:name=".MainCamActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="landscape"/>
         <activity
             android:name=".TrainCamActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"/>
+
+
     </application>
 
 </manifest>
