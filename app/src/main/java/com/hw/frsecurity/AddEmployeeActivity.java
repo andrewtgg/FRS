@@ -29,6 +29,7 @@ public class AddEmployeeActivity extends AppCompatActivity {
     ImageView newEmployeeImage;
     Database db;
     private Bitmap employee_img;
+    private static boolean real_image = false;
 
     static int CODE_RETURN_PIC = 1;
 
@@ -87,6 +88,7 @@ public class AddEmployeeActivity extends AppCompatActivity {
                     Toast.makeText(AddEmployeeActivity.this, "Inserted into Database!", Toast.LENGTH_LONG).show();
                     Intent i=new Intent();
                     setResult(RESULT_OK,i);
+                    real_image = false;
                     finish();
                     /*
                     startActivity(new Intent(AddEmployeeActivity.this, ViewEmployeesActivity.class));
@@ -98,10 +100,13 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
         //if employee img exists, set it again
         if (savedInstanceState != null){
-            employee_img = savedInstanceState.getParcelable("employee_img");
-            newEmployeeImage.setImageBitmap(employee_img);
+            if(real_image) {
+                employee_img = savedInstanceState.getParcelable("employee_img");
+                newEmployeeImage.setImageBitmap(employee_img);
+            }
         }
     }
+    
 
     private byte[] getBitmapAsByteArray(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -120,7 +125,7 @@ public class AddEmployeeActivity extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK) {
                     employee_img = data.getParcelableExtra(TrainCamActivity.EMPLOYEE_PIC);
                     newEmployeeImage.setImageBitmap(employee_img);
-
+                    real_image = true;
             }
         }
 

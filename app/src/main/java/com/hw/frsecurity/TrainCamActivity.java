@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -40,6 +41,9 @@ public class TrainCamActivity extends CamActivity {
     ImageView preview_face;
 
     private ArrayList<Mat> train_faces = new ArrayList<Mat>();
+
+    static int semaphore_cam = 0;
+    private long mLastClickTime = 0;
 
 
 
@@ -112,16 +116,29 @@ public class TrainCamActivity extends CamActivity {
     }
 
     public void take_picture(View view) {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 400){
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+        if(semaphore_cam > 0) {
+            Log.e(TAG, "Semaphore is too high, not doing anything");
+            return;
+        }
+        semaphore_cam++;
+
+
         Log.i(TAG, "Take a screenshot");
         System.out.println("faces: " + numfaces);
 
         if(numfaces == 0) {
             Toast.makeText(this, "No face detected!", Toast.LENGTH_SHORT).show();
+            semaphore_cam--;
             return;
         }
 
         if(numfaces > 1) {
             Toast.makeText(this, "Multiple faces detected. Please try again.", Toast.LENGTH_SHORT).show();
+            semaphore_cam--;
             return;
         }
         if(detected_face != null) {
@@ -156,7 +173,11 @@ public class TrainCamActivity extends CamActivity {
 
             resultIntent.putExtra(EMPLOYEE_PIC, img);
             setResult(Activity.RESULT_OK, resultIntent);
-            finish();
+            semaphore_cam--;
+            this.finish();
+        }
+        else {
+            semaphore_cam--;
         }
 
     }
