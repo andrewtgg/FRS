@@ -3,6 +3,7 @@ package com.hw.frsecurity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import static com.hw.frsecurity.AddEmployeeActivity.TAG;
 
 // Probably should extract this to handle more listviews instead of just employee
 
@@ -85,17 +88,20 @@ public class ListAdapter extends BaseAdapter {
 
         try {
             convertedDate = formatter.parse(A.get(position).getLastSeen());
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+        Log.d(TAG, "Continuing");
 
         if (convertedDate != null) {
+            Log.d(TAG, "in here");
             String dateOnly = dateFmt.format(convertedDate);
             String timeOnly = timeFmt.format(convertedDate);
 
             viewHolder.employeeTimeSeen.setText("Time seen: " + timeOnly);
             viewHolder.employeeDateSeen.setText("Date seen: " + dateOnly);
         }
+        Log.d(TAG, "made it out");
 
         // decodes byte array into image
         Bitmap img = BitmapFactory.decodeByteArray(A.get(position).getImg(), 0, A.get(position).getImg().length);

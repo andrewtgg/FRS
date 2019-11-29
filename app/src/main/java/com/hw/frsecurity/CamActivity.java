@@ -2,6 +2,7 @@ package com.hw.frsecurity;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -101,6 +102,8 @@ public abstract class CamActivity extends AppCompatActivity implements CameraBri
         }
     };
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,7 +122,7 @@ public abstract class CamActivity extends AppCompatActivity implements CameraBri
         openCvCameraView.setCameraIndex(CameraBridgeViewBase.CAMERA_ID_FRONT);
 
         openCvCameraView.setVisibility(SurfaceView.VISIBLE);
-        openCvCameraView.enableFpsMeter();
+        //openCvCameraView.enableFpsMeter();
 
 
         openCvCameraView.setOrientation(getResources().getConfiguration().orientation);
@@ -169,15 +172,21 @@ public abstract class CamActivity extends AppCompatActivity implements CameraBri
 
     @Override
     public void onCameraViewStarted(int width, int height) {
+
     }
     @Override
     public void onCameraViewStopped() {
+        Log.d(TAG, "Stopped camera view");
     }
     @Override
     public void onDestroy() {
+        Log.d(TAG, "Destroy camera view");
         super.onDestroy();
         if (openCvCameraView != null)
             openCvCameraView.disableView();
+        if (android.os.Build.VERSION.SDK_INT >= 27) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
     }
     @Override
     public abstract Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame);

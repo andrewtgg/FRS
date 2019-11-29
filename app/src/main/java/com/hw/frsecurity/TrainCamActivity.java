@@ -2,6 +2,7 @@ package com.hw.frsecurity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -54,6 +55,19 @@ public class TrainCamActivity extends CamActivity {
         preview_face = findViewById(R.id.preview_face);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "pause camera view");
+
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
 
 
     @Override
@@ -61,7 +75,7 @@ public class TrainCamActivity extends CamActivity {
         Mat rgba_frame = inputFrame.rgba();
         Mat gray_frame = inputFrame.gray();
         MatOfRect faces = new MatOfRect();
-        Mat resizeimage = new Mat();
+        //Mat resizeimage = new Mat();
         Mat crop = null;
 
 
@@ -82,9 +96,6 @@ public class TrainCamActivity extends CamActivity {
         for (Rect rect : facesArray) {
             Imgproc.rectangle(rgba_frame, rect.tl(), rect.br(), FACE_RECT_COLOR, 3);
             crop = new Mat(rgba_frame, rect);
-            Log.i(TAG,"crop " + crop.rows() + " " + crop.cols());
-
-            ;
             int width = rgba_frame.cols();
             int height = rgba_frame.rows();
             //Mat largerImage = new Mat(width, height,crop.type());
@@ -98,9 +109,9 @@ public class TrainCamActivity extends CamActivity {
 
             // crop.copyTo(rgba_frame, )
 
-            Size scaleSize = new Size(width,height);
-            resize(crop, resizeimage, scaleSize , 0, 0, INTER_CUBIC);
-            Log.i(TAG,"resize " + resizeimage.rows() + " " + resizeimage.cols());
+            //Size scaleSize = new Size(width,height);
+            //resize(crop, resizeimage, scaleSize , 0, 0, INTER_CUBIC);
+            //Log.i(TAG,"resize " + resizeimage.rows() + " " + resizeimage.cols());
             //return resizeimage;
 
         }
@@ -161,7 +172,7 @@ public class TrainCamActivity extends CamActivity {
         }
 
         int num_pictures = train_faces.size();
-        Toast.makeText(this, "There are " + num_pictures + " faces", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Total pics: " + num_pictures, Toast.LENGTH_SHORT).show();
 
         if(num_pictures >= 3) {
             Intent resultIntent = new Intent();

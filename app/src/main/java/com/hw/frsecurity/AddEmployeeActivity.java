@@ -2,8 +2,10 @@ package com.hw.frsecurity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -25,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.ByteArrayOutputStream;
 
 public class AddEmployeeActivity extends AppCompatActivity {
+    static String TAG = "AddEmployeeActivity";
 
     Spinner newEmployeeDepartmentSpinner;
     ImageView newEmployeeImage;
@@ -36,7 +39,11 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
+
+
+        Log.d(TAG, "onCreate add employee view");
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_add_employee);
 
@@ -79,7 +86,9 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
                     byte[] imgData = getBitmapAsByteArray(employeeImgDrawable.getBitmap());
 
-                    String currentDateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss", Locale.getDefault()).format(new Date());
+                    //String currentDateAndTime = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss", Locale.getDefault()).format(new Date());
+                    SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy 'at' HH:mm:ss");
+                    String currentDateAndTime = sdf.format(new Date());
 
                     Employee newEmployee = new Employee(Integer.parseInt(newEmployeeIDText), imgData, newEmployeeNameText, newEmployeeDept, currentDateAndTime);
 
