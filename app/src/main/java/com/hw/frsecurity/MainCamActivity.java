@@ -38,6 +38,10 @@ import java.io.InputStream;
 public class MainCamActivity extends CamActivity {
     private final String TAG = "MainCamActivity";
 
+    private int num_faces = 0;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,24 +69,26 @@ public class MainCamActivity extends CamActivity {
 
 
         Rect[] facesArray = faces.toArray();
+        int new_num = facesArray.length;
+        int new_idx;
+        if(new_num > num_faces) {
+            new_idx = new_num;
+            num_faces = new_num;
+            Log.d(TAG, "newface at: " + new_idx);
+        }
+        else {
+            num_faces = new_num;
+        }
+
+
         for (Rect rect : facesArray) {
             Imgproc.rectangle(rgba_frame, rect.tl(), rect.br(), FACE_RECT_COLOR, 3);
             crop = new Mat(rgba_frame, rect);
-            Log.i(TAG,"crop " + crop.rows() + " " + crop.cols());
+            //Log.i(TAG,"crop " + crop.rows() + " " + crop.cols());
 
             ;
             int width = rgba_frame.cols();
             int height = rgba_frame.rows();
-            //Mat largerImage = new Mat(width, height,crop.type());
-            //largerImage =
-            //Mat mask = new Mat(crop.rows(), crop.cols(), CvType.CV_8U, Scalar.all(0));
-            //crop.copyTo(largerImage, mask);
-            //return largerImage;
-            //Log.i(TAG,"LargerImage " + largerImage.rows() + " " + largerImage.cols());
-           // Rect roi = new Rect(0, 0, crop.cols(), 10);
-            //Mat sub =image.submat(roi);
-
-           // crop.copyTo(rgba_frame, )
 
 
         }
