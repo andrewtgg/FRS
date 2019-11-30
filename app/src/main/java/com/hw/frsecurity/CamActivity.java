@@ -57,7 +57,7 @@ public abstract class CamActivity extends AppCompatActivity implements CameraBri
 
 
 
-    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+    public BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
             if (status == LoaderCallbackInterface.SUCCESS) {

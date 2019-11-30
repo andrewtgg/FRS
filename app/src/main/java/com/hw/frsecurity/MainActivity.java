@@ -2,8 +2,12 @@ package com.hw.frsecurity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.os.SystemClock;
 import android.view.View;
 import android.view.WindowManager;
@@ -14,6 +18,26 @@ public class MainActivity extends AppCompatActivity {
 
 
     private Button button_access_logs;
+    private Intent intent;
+    private FaceRecService mService;
+    private boolean mBound = false;
+    private boolean mStarted = false;
+
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            FaceRecService.LocalBinder binder = (FaceRecService.LocalBinder) service;
+            mService = binder.getService();
+            mBound = true;
+            mStarted = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mBound = false;
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +70,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, ViewEmployeesActivity.class));
             }
         });
+        if(mStarted == false) {
+            intent = new Intent(this, FaceRecService.class);
+            bindService(intent, connection, Context.BIND_IMPORTANT);
+            startService(intent);
+        }
 
     }
 
@@ -53,5 +82,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         button_access_logs.setEnabled(true);
+        if(mBound == false) {
+            intent = new Intent(this, FaceRecService.class);
+            bindService(intent, connection, Context.BIND_IMPORTANT);
+        }
+
+    }
+
+    @Override
+    protected void onPause() {
+        System.out.println("mainActivity onPause called");
+        if(mBound == true) {
+            unbindService(connection);
+            mBound = false;
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        System.out.println("mainActivity onDestroy called");
+        super.onDestroy();
     }
 }
