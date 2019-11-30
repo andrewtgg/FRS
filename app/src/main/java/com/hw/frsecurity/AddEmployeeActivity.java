@@ -109,6 +109,27 @@ public class AddEmployeeActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.new_employee_img).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                EditText newEmployeeName = findViewById(R.id.new_employee_name);
+                EditText newEmployeeID = findViewById(R.id.new_employee_id);
+
+                String newEmployeeNameText = newEmployeeName.getText().toString();
+                String newEmployeeIDText = newEmployeeID.getText().toString();
+
+                if (newEmployeeNameText.matches("") || newEmployeeIDText.matches("")) {
+                    Toast.makeText(AddEmployeeActivity.this, "Please fill out all information before taking a picture", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent i = new Intent(AddEmployeeActivity.this, TrainCamActivity.class);
+                    startActivityForResult(i, CODE_RETURN_PIC);
+                }
+            }
+        });
+
+
         //if employee img exists, set it again
         if (savedInstanceState != null){
             if(real_image) {
@@ -124,11 +145,12 @@ public class AddEmployeeActivity extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
         return outputStream.toByteArray();
     }
-
+    /*
     public void open_train_Cam(View view) {
         Intent i = new Intent(this, TrainCamActivity.class);
         startActivityForResult(i, CODE_RETURN_PIC);
     }
+    */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

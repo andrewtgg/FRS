@@ -41,10 +41,7 @@ public abstract class CamActivity extends AppCompatActivity implements CameraBri
     private static final int CAMERA_PERMISSION_REQUEST = 1;
     private String TAG = "CamActivity";
 
-
     public CameraBridgeViewBase openCvCameraView;
-
-
 
     public File mCascadeFile;
     public CascadeClassifier mJavaDetector;
@@ -53,8 +50,6 @@ public abstract class CamActivity extends AppCompatActivity implements CameraBri
     public static final Scalar FACE_RECT_COLOR         = new Scalar(255, 0, 0, 255);
 
     public int layout_view;
-
-
 
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
