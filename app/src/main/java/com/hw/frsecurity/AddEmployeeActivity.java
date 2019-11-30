@@ -1,10 +1,14 @@
 package com.hw.frsecurity;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -37,6 +41,23 @@ public class AddEmployeeActivity extends AppCompatActivity {
     private String newEmployeeIDText;
 
     static int CODE_RETURN_PIC = 1;
+
+    private FaceRecService mService;
+    private boolean mBound = false;
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            FaceRecService.LocalBinder binder = (FaceRecService.LocalBinder) service;
+            mService = binder.getService();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mBound = false;
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +122,9 @@ public class AddEmployeeActivity extends AppCompatActivity {
                     Intent i=new Intent();
                     setResult(RESULT_OK,i);
                     real_image = false;
+
                     finish();
+                    mService.update_model(newEmployeeIDText);
                     /*
                     startActivity(new Intent(AddEmployeeActivity.this, ViewEmployeesActivity.class));
                     finish();
@@ -140,7 +163,24 @@ public class AddEmployeeActivity extends AppCompatActivity {
             }
         }
     }
-    
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!mBound) {
+            Intent intent = new Intent(this, FaceRecService.class);
+            bindService(intent, connection, Context.BIND_IMPORTANT);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(mBound) {
+            unbindService(connection);
+            mBound = false;
+        }
+    }
 
     private byte[] getBitmapAsByteArray(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
