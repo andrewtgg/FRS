@@ -54,6 +54,7 @@ public class TrainCamActivity extends CamActivity {
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_train_cam);

@@ -1,11 +1,17 @@
 package com.hw.frsecurity;
 
+<<<<<<< HEAD
 import android.app.IntentService;
 import android.app.Service;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.media.ImageReader;
+=======
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
+>>>>>>> save img, start on fr
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
@@ -16,6 +22,7 @@ import androidx.annotation.Nullable;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
+<<<<<<< HEAD
 import org.opencv.core.Mat;
 import org.opencv.face.LBPHFaceRecognizer;
 import org.opencv.imgproc.Imgproc;
@@ -32,6 +39,15 @@ import java.util.Vector;
 import static org.opencv.core.CvType.CV_32SC1;
 import static org.opencv.core.CvType.CV_8U;
 
+=======
+import org.opencv.face.LBPHFaceRecognizer;
+import org.opencv.objdetect.CascadeClassifier;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+>>>>>>> save img, start on fr
 
 public class FaceRecService extends Service {
 
@@ -41,6 +57,7 @@ public class FaceRecService extends Service {
 
     private final IBinder binder = new LocalBinder();
     public static LBPHFaceRecognizer faceRecognizer;
+
 
 
     public class LocalBinder extends Binder {
@@ -129,6 +146,7 @@ public class FaceRecService extends Service {
                 }*/
                 //update_model("12345");
 
+
                 //Load native library after(!) OpenCV initialization
                 System.loadLibrary("native-lib");
             } else {
@@ -137,7 +155,6 @@ public class FaceRecService extends Service {
         }
         //TODO override finish to kill service
     };
-
 
     public void update_model(final String employee_id) {
         Log.d(TAG, "Updating model with employee id " + employee_id);
@@ -150,7 +167,7 @@ public class FaceRecService extends Service {
 
         try {
             Thread.sleep(1000);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

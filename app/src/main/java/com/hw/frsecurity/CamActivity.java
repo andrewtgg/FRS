@@ -51,8 +51,6 @@ public abstract class CamActivity extends AppCompatActivity implements CameraBri
 
     public int layout_view;
 
-
-
     public BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
