@@ -89,7 +89,7 @@ public class ListAdapter extends BaseAdapter {
         try {
             convertedDate = formatter.parse(A.get(position).getLastSeen());
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         Log.d(TAG, "Continuing");
 

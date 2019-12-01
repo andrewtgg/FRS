@@ -34,6 +34,7 @@ public class AddEmployeeActivity extends AppCompatActivity {
     Database db;
     private Bitmap employee_img;
     private static boolean real_image = false;
+    private String newEmployeeIDText;
 
     static int CODE_RETURN_PIC = 1;
 
@@ -72,7 +73,7 @@ public class AddEmployeeActivity extends AppCompatActivity {
                 EditText newEmployeeID = findViewById(R.id.new_employee_id);
 
                 String newEmployeeNameText = newEmployeeName.getText().toString();
-                String newEmployeeIDText = newEmployeeID.getText().toString();
+                newEmployeeIDText = newEmployeeID.getText().toString();
 
                 // error handling
                 if (newEmployeeNameText.matches("") || newEmployeeIDText.matches("")) {
@@ -124,6 +125,7 @@ public class AddEmployeeActivity extends AppCompatActivity {
                 }
                 else {
                     Intent i = new Intent(AddEmployeeActivity.this, TrainCamActivity.class);
+                    i.putExtra("employee_id", newEmployeeIDText);
                     startActivityForResult(i, CODE_RETURN_PIC);
                 }
             }

@@ -45,6 +45,7 @@ public class TrainCamActivity extends CamActivity {
 
     static int semaphore_cam = 0;
     private long mLastClickTime = 0;
+    private String employee_id;
 
 
 
@@ -53,6 +54,10 @@ public class TrainCamActivity extends CamActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_train_cam);
         preview_face = findViewById(R.id.preview_face);
+
+        Intent i = getIntent();
+        employee_id = i.getExtras().getString("employee_id","none");
+        Log.d(TAG, "Received employee_id:" + employee_id);
     }
 
     @Override
