@@ -166,6 +166,7 @@ public class FaceRecService extends Service {
         faceRecognizer.predict(face,label,confidence);
 
         Log.d(TAG, "Label: " + label[0] + "Confidence: " + confidence[0]);
+
     }
 
 }

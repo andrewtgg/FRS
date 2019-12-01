@@ -124,7 +124,6 @@ public class MainCamActivity extends CamActivity {
         int new_num = facesArray.length;
         int new_idx;
         if(new_num > num_faces) {
-
             dummy_ctr++;
 
             if(dummy_ctr > 2) {
