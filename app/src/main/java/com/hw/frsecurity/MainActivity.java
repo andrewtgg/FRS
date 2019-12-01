@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
+
 public class MainActivity extends AppCompatActivity {
     private long mLastClickTime = 0;
 
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
             bindService(intent, connection, Context.BIND_IMPORTANT);
             startService(intent);
         }
+
 
     }
 

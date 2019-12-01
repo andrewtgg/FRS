@@ -52,9 +52,6 @@ public class TrainCamActivity extends CamActivity {
     private long mLastClickTime = 0;
     private String employee_id;
 
-    private String employee_id = "12345";
-
-
 
 
     @Override
@@ -99,7 +96,7 @@ public class TrainCamActivity extends CamActivity {
         }
 
         if (mJavaDetector != null)
-            mJavaDetector.detectMultiScale(gray_frame, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
+            mJavaDetector.detectMultiScale(gray_frame, faces, 1.1, 2, 2,
                     new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
 
 
