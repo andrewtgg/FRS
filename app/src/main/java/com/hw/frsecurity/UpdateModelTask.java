@@ -46,14 +46,18 @@ public class UpdateModelTask extends AsyncTask<String, Void, Void> {
             Mat image_gray = new Mat();
             Imgproc.cvtColor(image,image_gray,Imgproc.COLOR_BGR2GRAY);
             train_images.add(image_gray);
-            labels.put(i,1,Integer.parseInt(employee_id));
+            labels.put(i,0,Integer.parseInt(employee_id));
         }
+        Log.d(TAG, "Labels: " + labels.dump());
+
+
+
         if(FaceRecService.faceRecognizer != null) {
             Log.d(TAG, "Training model with employee id " + employee_id);
-            FaceRecService.faceRecognizer.train(train_images, labels);
+            FaceRecService.faceRecognizer.update(train_images, labels);
 
-            String s = FaceRecService.faceRecognizer.getLabelInfo(12345);
-            Log.d(TAG, "label info: " + s);
+            //String s = FaceRecService.faceRecognizer.getLabelInfo(12345);
+            //Log.d(TAG, "label info: " + s);
 
         }
 

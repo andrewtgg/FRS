@@ -186,42 +186,16 @@ public class FaceRecService extends Service {
 
         //TODO save_model in asynctask
         save_model();
-
-        //save_model();
-
-        /*Imgcodecs imgcodecs = new Imgcodecs();
-        ContextWrapper cw = new ContextWrapper(getApplicationContext());
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-
-        FilenameFilter employeefilter = new FilenameFilter() {
-            public boolean accept(File dir, String name) {
-                return name.contains(employee_id);
-            };
-        };
-
-        File[] face_files = directory.listFiles(employeefilter);
-        Mat labels = new Mat(face_files.length, 1, CV_32SC1);
-        //int[] labels = new int[face_files.length];
-        Vector<Mat> train_images = new Vector(face_files.length);
+    }
 
 
-        for(int i =0; i < face_files.length;i++) {
-            Log.d(TAG, "Filename: " + face_files[i].toString() + " ID:" + employee_id + " index: " + i);
+    public void model_predict(Mat face) {
+        Log.d(TAG, "Using model to predict!");
+        int[] label = new int[2];
+        double[] confidence = new double[2];
+        faceRecognizer.predict(face,label,confidence);
 
-
-            Mat image = Imgcodecs.imread(face_files[i].toString());
-            Mat image_gray = new Mat();
-            Imgproc.cvtColor(image,image_gray,Imgproc.COLOR_BGR2GRAY);
-            train_images.add(image_gray);
-            labels.put(i,1,Integer.parseInt(employee_id));
-        }
-        if(faceRecognizer == null) {
-            Log.d(TAG, "Training model with employee id " + employee_id);
-            faceRecognizer.train(train_images, labels);
-
-            String s = faceRecognizer.getLabelInfo(12345);
-            Log.d(TAG, "label info: " + s);
-        }*/
+        Log.d(TAG, "Label: " + label[0] + "Confidence: " + confidence[0]);
     }
 
 }
