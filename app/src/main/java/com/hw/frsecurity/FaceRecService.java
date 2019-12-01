@@ -1,17 +1,23 @@
 package com.hw.frsecurity;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> load/save model to file
 import android.app.IntentService;
 import android.app.Service;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.media.ImageReader;
+<<<<<<< HEAD
 =======
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 >>>>>>> save img, start on fr
+=======
+>>>>>>> load/save model to file
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
@@ -23,6 +29,9 @@ import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> load/save model to file
 import org.opencv.core.Mat;
 import org.opencv.face.LBPHFaceRecognizer;
 import org.opencv.imgproc.Imgproc;
@@ -39,6 +48,7 @@ import java.util.Vector;
 import static org.opencv.core.CvType.CV_32SC1;
 import static org.opencv.core.CvType.CV_8U;
 
+<<<<<<< HEAD
 =======
 import org.opencv.face.LBPHFaceRecognizer;
 import org.opencv.objdetect.CascadeClassifier;
@@ -48,6 +58,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 >>>>>>> save img, start on fr
+=======
+>>>>>>> load/save model to file
 
 public class FaceRecService extends Service {
 
@@ -57,7 +69,10 @@ public class FaceRecService extends Service {
 
     private final IBinder binder = new LocalBinder();
     public static LBPHFaceRecognizer faceRecognizer;
+<<<<<<< HEAD
 
+=======
+>>>>>>> load/save model to file
 
 
     public class LocalBinder extends Binder {
@@ -145,8 +160,6 @@ public class FaceRecService extends Service {
                     e.printStackTrace();
                 }*/
                 //update_model("12345");
-
-
                 //Load native library after(!) OpenCV initialization
                 System.loadLibrary("native-lib");
             } else {
@@ -155,7 +168,6 @@ public class FaceRecService extends Service {
         }
         //TODO override finish to kill service
     };
-
     public void update_model(final String employee_id) {
         Log.d(TAG, "Updating model with employee id " + employee_id);
 
@@ -168,6 +180,7 @@ public class FaceRecService extends Service {
         try {
             Thread.sleep(1000);
         } catch (Exception e) {
+
             e.printStackTrace();
         }
 
