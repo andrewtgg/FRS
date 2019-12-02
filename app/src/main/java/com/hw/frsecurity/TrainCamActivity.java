@@ -48,8 +48,6 @@ public class TrainCamActivity extends CamActivity {
     private String employee_id;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_train_cam);

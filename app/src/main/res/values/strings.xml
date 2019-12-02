@@ -5,6 +5,7 @@
     <string name="view_employees">View Employees</string>
     <string name="add">Add</string>
 
+
     <string-array name="departments_array">
         <item>Engineering</item>
         <item>Finance</item>

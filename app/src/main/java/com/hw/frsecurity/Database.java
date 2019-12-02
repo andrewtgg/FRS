@@ -41,22 +41,6 @@ public class Database extends SQLiteOpenHelper {
             VERSION = newVersion;
         }
     }
-    /*
-    public void insert(int id, byte[] img, String name, String department, String lastSeen) {
-        ContentValues cv = new ContentValues();
-        cv.put("ID", id);
-        cv.put("IMAGE", img);
-        cv.put("NAME", name);
-        cv.put("DEPARTMENT", department);
-        cv.put("LAST_SEEN", lastSeen);
-
-        db = getWritableDatabase();
-        db.insert(TABLE_NAME, null, cv);
-
-        // insert into EMPLOYEES(id,image,name,department) values ("id", "img", "name", "department")
-        db.execSQL("INSERT INTO " + TABLE_NAME + "(ID, IMAGE, NAME, DEPARTMENT, LAST_SEEN) VALUES" + "(\"" + id + "\", \"" + img + "\", \"" + name + "\" , \"" + department + "\", \"" + lastSeen + "\");");
-    }
-    */
 
     public void insertEmployee(Employee employee) {
 
@@ -69,8 +53,6 @@ public class Database extends SQLiteOpenHelper {
 
         db = getWritableDatabase();
         db.insert(TABLE_NAME, null, cv);
-
-        // db.execSQL("INSERT OR IGNORE INTO " + TABLE_NAME + "(EMPLOYEE_ID, IMAGE, NAME, DEPARTMENT, LAST_SEEN) VALUES" + "(\"" + employee.getId() + "\", \"" + employee.getImg() + "\", \"" + employee.getName() + "\" , \"" + employee.getDepartment() + "\", \"" + employee.getLastSeen() + "\");");
     }
 
     public void insertLogItem(ActivityLogItem activityLogItem) {
@@ -84,6 +66,11 @@ public class Database extends SQLiteOpenHelper {
         db.insert(LOG_TABLE, null, cv);
     }
 
+    // Deletes an employee from employee database
+    public boolean deleteEmployee(Employee employee) {
+        return db.delete(TABLE_NAME, "EMPLOYEE_ID=" + employee.getId(), null) > 0;
+    }
+    
     // return all employees
     public Cursor getEmployees() {
         SQLiteDatabase db = this.getWritableDatabase();

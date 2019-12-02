@@ -1,5 +1,6 @@
 package com.hw.frsecurity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,6 +22,7 @@ import static com.hw.frsecurity.AddEmployeeActivity.TAG;
 
 // Probably should extract this to handle more listviews instead of just employee
 
+@SuppressLint("SetTextI18n")
 public class ListAdapter extends BaseAdapter {
 
     Context context;
@@ -117,13 +119,11 @@ public class ListAdapter extends BaseAdapter {
     }
 
     private static class ViewHolder {
-
         TextView employeeId;
         TextView employeeName;
         TextView employeeTimeSeen;
         TextView employeeDateSeen;
         ImageView employeeImg;
-
     }
 
 }

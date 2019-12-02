@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
+// import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
@@ -85,12 +85,14 @@ public class AccessLogsActivity extends AppCompatActivity {
 
         lView.setAdapter(lAdapter);
 
+        /*
         lView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(AccessLogsActivity.this, "Made it!", Toast.LENGTH_SHORT).show();
             }
         });
+        */
     }
 
     /* Note: This is just to create mock data */
