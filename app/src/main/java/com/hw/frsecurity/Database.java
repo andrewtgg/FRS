@@ -58,7 +58,7 @@ public class Database extends SQLiteOpenHelper {
     }
     */
 
-    public void insertEmployee(Employee employee) {
+    public long insertEmployee(Employee employee) {
 
         ContentValues cv = new ContentValues();
         cv.put("EMPLOYEE_ID", employee.getId());
@@ -68,7 +68,9 @@ public class Database extends SQLiteOpenHelper {
         cv.put("LAST_SEEN", employee.getLastSeen());
 
         db = getWritableDatabase();
-        db.insert(TABLE_NAME, null, cv);
+        long insertResult = db.insert(TABLE_NAME, null, cv);
+
+        return insertResult;
 
         // db.execSQL("INSERT OR IGNORE INTO " + TABLE_NAME + "(EMPLOYEE_ID, IMAGE, NAME, DEPARTMENT, LAST_SEEN) VALUES" + "(\"" + employee.getId() + "\", \"" + employee.getImg() + "\", \"" + employee.getName() + "\" , \"" + employee.getDepartment() + "\", \"" + employee.getLastSeen() + "\");");
     }

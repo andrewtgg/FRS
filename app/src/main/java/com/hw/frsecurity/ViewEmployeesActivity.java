@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +13,11 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
 
 import java.util.ArrayList;
 
@@ -33,7 +40,7 @@ public class ViewEmployeesActivity extends AppCompatActivity {
 
         Cursor dbCursor = db.getEmployees();
 
-        ArrayList<Employee> allEmployees = new ArrayList<>();
+        final ArrayList<Employee> allEmployees = new ArrayList<>();
 
         while (dbCursor.moveToNext()) {
 
@@ -44,7 +51,7 @@ public class ViewEmployeesActivity extends AppCompatActivity {
 
         dbCursor.close();
 
-        lView = findViewById(R.id.employee_list);
+        final SwipeMenuListView lView = findViewById(R.id.employee_list);
 
         // GenericListAdapter test = new GenericListAdapter(ViewEmployeesActivity.this, R.id.employee_list, allEmployees );
 
@@ -53,6 +60,44 @@ public class ViewEmployeesActivity extends AppCompatActivity {
         Log.d(TAG, "adapter set");
 
         lView.setAdapter(lAdapter);
+
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+            @Override
+        public void create(SwipeMenu menu) {
+            // create "delete" item
+            SwipeMenuItem deleteItem = new SwipeMenuItem(
+                    getApplicationContext());
+            // set item background
+            deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                    0x3F, 0x25)));
+            // set item width
+            deleteItem.setWidth(170);
+            // set a icon
+            deleteItem.setIcon(R.drawable.ic_delete);
+            // add to menu
+            menu.addMenuItem(deleteItem);
+        }
+    };
+
+        lView.setMenuCreator(creator);
+
+        lView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                switch (index) {
+                    case 1:
+                        //BIG JOE DATABASE
+                        allEmployees.remove(position);
+                        lAdapter.notifyDataSetChanged();
+                        recreate();
+                        break;
+                }
+                // false : close the menu; true : not close the menu
+                return false;
+            }
+        });
+
 
         /*lView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
