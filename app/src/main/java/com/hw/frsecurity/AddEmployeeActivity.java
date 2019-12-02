@@ -97,9 +97,6 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
                     if (j == -1) {
                         Toast.makeText(AddEmployeeActivity.this, "Unable to add: Employee ID already exists!", Toast.LENGTH_LONG).show();
-                        Intent i=new Intent();
-                        setResult(RESULT_OK,i);
-                        real_image = false;
                         finish();
                     }
 
