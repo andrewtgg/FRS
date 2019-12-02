@@ -22,9 +22,17 @@ public class UpdateModelTask extends AsyncTask<String, Void, Void> {
     ContextWrapper cw;
 
     public UpdateModelTask(ContextWrapper c) { cw = c; }
+
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        //System.loadLibrary("native-lib");
+    }
+
     @Override
     protected Void doInBackground(String... strings) {
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        File directory = cw.getDir("train_images", Context.MODE_PRIVATE);
         final String employee_id = strings[0];
         FilenameFilter employeefilter = new FilenameFilter() {
             public boolean accept(File dir, String name) {
