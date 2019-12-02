@@ -147,6 +147,8 @@ public class MainCamActivity extends CamActivity {
 
         return rgba_frame;
     }
+
+    public native long tan_triggs(long src_addr);
     private void send_face_to_model(Mat img) {
         Size scaleSize = new Size(200,200);
 
@@ -155,9 +157,13 @@ public class MainCamActivity extends CamActivity {
 
         Mat image_gray = new Mat();
         Imgproc.cvtColor(img,image_gray,Imgproc.COLOR_BGR2GRAY);
+
+        long res_addr = tan_triggs(image_gray.getNativeObjAddr());
+
+        Mat image_trigg = new Mat(res_addr);
         if(mBound) {
             Log.d(TAG, "Sending face to model");
-            mService.model_predict(image_gray);
+            mService.model_predict(image_trigg);
         }
 
         //Bitmap img2 = Bitmap.createBitmap(resized_face.cols(), resized_face.rows(),Bitmap.Config.ARGB_8888);

@@ -46,7 +46,7 @@ public class TrainCamActivity extends CamActivity {
 
     ImageView preview_face;
 
-    private ArrayList<Bitmap> train_faces = new ArrayList<Bitmap>();
+    private ArrayList<Mat> train_faces = new ArrayList<Mat>();
 
     static int semaphore_cam = 0;
     private long mLastClickTime = 0;
@@ -62,6 +62,7 @@ public class TrainCamActivity extends CamActivity {
         Intent i = getIntent();
         employee_id = i.getExtras().getString("employee_id","none");
         Log.d(TAG, "Received employee_id:" + employee_id);
+        System.loadLibrary("native-lib");
     }
 
     @Override
@@ -166,10 +167,12 @@ public class TrainCamActivity extends CamActivity {
             Mat resized_face2 = new Mat();
             resize(dface, resized_face2, scaleSize2 , 0, 0, INTER_AREA);
 
-            Bitmap img2 = Bitmap.createBitmap(resized_face2.cols(), resized_face2.rows(),Bitmap.Config.ARGB_8888);
-            Utils.matToBitmap(resized_face2,img2);
+            train_faces.add(resized_face2);
 
-            train_faces.add(img2);
+            //Bitmap img2 = Bitmap.createBitmap(resized_face2.cols(), resized_face2.rows(),Bitmap.Config.ARGB_8888);
+            //Utils.matToBitmap(resized_face2,img2);
+
+            //train_faces.add(img2);
         }
 
         int num_pictures = train_faces.size();
@@ -177,9 +180,9 @@ public class TrainCamActivity extends CamActivity {
 
         if(num_pictures >= NUM_TRAIN_PICS) {
             Intent resultIntent = new Intent();
-
-            Bitmap returned_face = train_faces.get(0); //return the first face picture
-
+            //Bitmap returned_face = train_faces.get(0); //return the first face picture
+            Bitmap returned_face = Bitmap.createBitmap(train_faces.get(0).cols(), train_faces.get(0).rows(),Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(train_faces.get(0),returned_face);
             //Bitmap img = Bitmap.createBitmap(returned_face.cols(), returned_face.rows(),Bitmap.Config.ARGB_8888);
             //Utils.matToBitmap(returned_face,img);
 
@@ -199,7 +202,10 @@ public class TrainCamActivity extends CamActivity {
     private void save_employee() {
         Log.d(TAG, "Saving images to local storage");
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+
+        SaveEmployeeThread t = new SaveEmployeeThread(cw,train_faces, employee_id);
+        t.run();
+        /*File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         for (int i=0;i<train_faces.size();i++) {
 
             Bitmap face = train_faces.get(i);
@@ -215,7 +221,7 @@ public class TrainCamActivity extends CamActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+        }*/
 
     }
 }
