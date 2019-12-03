@@ -73,6 +73,7 @@ public class ActivityLogAdapter extends BaseAdapter {
             viewHolder.employeeImg.setBackgroundColor(Color.parseColor("#FF0000"));
             viewHolder.employeeStatus.setText("Status: Unidentified");
         } else {
+            viewHolder.employeeImg.setBackgroundColor(Color.parseColor("#FFFFFF"));
             viewHolder.employeeStatus.setText("Status: Identified");
         }
         viewHolder.employeeTimeSeen.setText("Time: " + A.get(position).getTimeSeen());

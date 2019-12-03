@@ -34,10 +34,13 @@ import org.opencv.face.LBPHFaceRecognizer;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static org.opencv.core.CvType.CV_32SC1;
 import static org.opencv.imgproc.Imgproc.INTER_AREA;
@@ -49,9 +52,11 @@ public class MainCamActivity extends CamActivity {
 
     private int num_faces = 0;
     private int dummy_ctr = 0;
+    private int dummy_ctr2 = 0;
 
     private FaceRecService mService;
     private boolean mBound = false;
+    private Database db;
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -100,6 +105,7 @@ public class MainCamActivity extends CamActivity {
             Intent intent = new Intent(this, FaceRecService.class);
             bindService(intent, connection, Context.BIND_IMPORTANT);
         }
+        db = new Database(this, null, 3);
     }
 
     @Override
@@ -123,6 +129,7 @@ public class MainCamActivity extends CamActivity {
         Rect[] facesArray = faces.toArray();
         int new_num = facesArray.length;
         int new_idx;
+        Log.d(TAG, "num_faces: " + num_faces + " new_num: " + new_num + "dummy_ctr: " + dummy_ctr + "dummy_ctr2: " + dummy_ctr2);
         if(new_num > num_faces) {
             dummy_ctr++;
 
@@ -131,18 +138,25 @@ public class MainCamActivity extends CamActivity {
                 num_faces = new_num;
                 Log.d(TAG, "newface at: " + new_idx);
                 Mat crop = new Mat(rgba_frame, facesArray[new_idx]);
-                send_face_to_model(crop);
+                send_face_to_model(crop.clone());
                 dummy_ctr = 0;
+            }
+        }
+        else if (new_num < num_faces) {
+            dummy_ctr2++;
+            if(dummy_ctr2 > 2) {
+                dummy_ctr2 = 0;
+                num_faces = new_num;
             }
         }
         else {
             dummy_ctr = 0;
-            num_faces = new_num;
+            dummy_ctr2 = 0;
         }
 
 
         for (Rect rect : facesArray) {
-            Imgproc.rectangle(rgba_frame, rect.tl(), rect.br(), FACE_RECT_COLOR, 3);
+            Imgproc.rectangle(rgba_frame, rect.tl(), rect.br(), FACE_RECT_COLOR, 1);
         }
 
         return rgba_frame;
@@ -150,6 +164,7 @@ public class MainCamActivity extends CamActivity {
 
     public native long tan_triggs(long src_addr);
     private void send_face_to_model(Mat img) {
+        int label = -1;
         Size scaleSize = new Size(200,200);
 
         Mat resized_face = new Mat();
@@ -163,11 +178,31 @@ public class MainCamActivity extends CamActivity {
         Mat image_trigg = new Mat(res_addr);
         if(mBound) {
             Log.d(TAG, "Sending face to model");
-            mService.model_predict(image_trigg);
+            label = mService.model_predict(image_trigg);
         }
-
+        save_face_to_db(resized_face, label);
         //Bitmap img2 = Bitmap.createBitmap(resized_face.cols(), resized_face.rows(),Bitmap.Config.ARGB_8888);
         //Utils.matToBitmap(resized_face,img2);
+    }
 
+    private void save_face_to_db(Mat img, int label) {
+
+        //Log.d(TAG, "Label for this guy: " + label);
+        int status = (label == -1) ? 0 : 1;
+        //Log.d(TAG, "Status for this guy: " + status);
+        Bitmap img2 = Bitmap.createBitmap(img.cols(), img.rows(),Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(img,img2);
+        byte[] byteimg = getBitmapAsByteArray(img2);
+
+        Date date = new Date();
+
+        ActivityLogItem a = new ActivityLogItem(label,byteimg,date.toString(), status);
+        db.insertLogItem(a);
+    }
+
+    private byte[] getBitmapAsByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
+        return outputStream.toByteArray();
     }
 }
