@@ -8,11 +8,14 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 // import android.widget.Toast;
+
+import com.google.android.material.tabs.TabLayout;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
@@ -21,14 +24,13 @@ import java.util.Date;
 import java.util.Random;
 
 public class AccessLogsActivity extends AppCompatActivity {
+    private String TAG = "AccessLogsActivity";
 
     Database db;
 
     ListView lView;
     ActivityLogAdapter lAdapter;
 
-    int [] randImgStock = { R.drawable.stock_avatar_img, R.drawable.stock_avatar_img2, R.drawable.stock_avatar_img3, R.drawable.stock_avatar_img4};
-    int [] randEmployeeId = { 134556, 367764, 395395, 130102};
 
 
     @Override
@@ -46,37 +48,31 @@ public class AccessLogsActivity extends AppCompatActivity {
 
         while (dbCursor.moveToNext()) {
             // int newId, byte[] newImg, String newDateSeen, int newStatus
-            SimpleDateFormat dateFmt = new SimpleDateFormat("dd-MM-yyyy");
-            SimpleDateFormat timeFmt = new SimpleDateFormat("hh:mm");
-            String dateOnly = dateFmt.format(dbCursor.getString(3));
-            String timeOnly = timeFmt.format(dbCursor.getString(3));
+            SimpleDateFormat fmt=new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
+            SimpleDateFormat dateFmt = new SimpleDateFormat("MM/dd/yyyy");
+            SimpleDateFormat timeFmt = new SimpleDateFormat("kk:mm");
+            Date date = null;
+
+            try {
+                String datestring = dbCursor.getString(3);
+                Log.d(TAG, "datestring: " + datestring);
+                date = fmt.parse(dbCursor.getString(3));
+                Log.d(TAG, "success: " + date.toString());
+            } catch (Exception e) {
+                Log.d(TAG, "Parse error");
+                e.printStackTrace();
+            }
+
+            String dateOnly = dateFmt.format(date);
+            String timeOnly = timeFmt.format(date);
             ActivityLogItem activityLogItem = new ActivityLogItem(dbCursor.getInt(1), dbCursor.getBlob(2), dateOnly, timeOnly
                     , dbCursor.getInt(4), dbCursor.getFloat(5));
+
+            Log.d(TAG, "ID: " + dbCursor.getInt(1) + "STAUTS:" + dbCursor.getInt(4));
             allAcitivityLog.add(activityLogItem);
         }
 
         dbCursor.close();
-
-        /* MOCK DATA */
-        for (int i = 0; i < 4; i++) {
-
-            Random rand = new Random();
-
-            Bitmap bm = BitmapFactory.decodeResource(getResources(), randImgStock[rand.nextInt(3)]);
-
-            byte[] imgData = getBitmapAsByteArray(bm);
-
-            SimpleDateFormat dateFmt = new SimpleDateFormat("dd-MM-yyyy");
-            SimpleDateFormat timeFmt = new SimpleDateFormat("hh:mm");
-
-            Date date = new Date();
-
-            String dateOnly = dateFmt.format(date);
-            String timeOnly = timeFmt.format(date);
-
-            allAcitivityLog.add(new ActivityLogItem(randEmployeeId[rand.nextInt(3)], imgData, dateOnly, timeOnly, rand.nextInt(2), 0.4532));
-        }
-        /*          */
 
         lView = findViewById(R.id.access_log_list);
 
@@ -100,10 +96,4 @@ public class AccessLogsActivity extends AppCompatActivity {
 
     }
 
-    /* Note: This is just to create mock data */
-    private byte[] getBitmapAsByteArray(Bitmap bitmap) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
-        return outputStream.toByteArray();
-    }
 }

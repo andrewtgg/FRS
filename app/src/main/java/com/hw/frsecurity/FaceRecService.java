@@ -189,13 +189,14 @@ public class FaceRecService extends Service {
     }
 
 
-    public void model_predict(Mat face) {
+    public int model_predict(Mat face) {
         Log.d(TAG, "Using model to predict!");
         int[] label = new int[2];
         double[] confidence = new double[2];
         faceRecognizer.predict(face,label,confidence);
 
         Log.d(TAG, "Label: " + label[0] + "Confidence: " + confidence[0]);
+        return label[0];
     }
 
 }
