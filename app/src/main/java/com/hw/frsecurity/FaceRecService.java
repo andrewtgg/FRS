@@ -1,23 +1,11 @@
 package com.hw.frsecurity;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> load/save model to file
 import android.app.IntentService;
 import android.app.Service;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.media.ImageReader;
-<<<<<<< HEAD
-=======
-import android.app.Service;
-import android.content.Context;
-import android.content.Intent;
->>>>>>> save img, start on fr
-=======
->>>>>>> load/save model to file
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
@@ -28,10 +16,6 @@ import androidx.annotation.Nullable;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> load/save model to file
 import org.opencv.core.Mat;
 import org.opencv.face.LBPHFaceRecognizer;
 import org.opencv.imgproc.Imgproc;
@@ -47,9 +31,6 @@ import java.util.Vector;
 
 import static org.opencv.core.CvType.CV_32SC1;
 import static org.opencv.core.CvType.CV_8U;
-
-<<<<<<< HEAD
-=======
 import org.opencv.face.LBPHFaceRecognizer;
 import org.opencv.objdetect.CascadeClassifier;
 
@@ -57,9 +38,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
->>>>>>> save img, start on fr
-=======
->>>>>>> load/save model to file
+
 
 public class FaceRecService extends Service {
 
@@ -69,10 +48,7 @@ public class FaceRecService extends Service {
 
     private final IBinder binder = new LocalBinder();
     public static LBPHFaceRecognizer faceRecognizer;
-<<<<<<< HEAD
-
-=======
->>>>>>> load/save model to file
+    private boolean trained = false;
 
 
     public class LocalBinder extends Binder {
@@ -122,7 +98,7 @@ public class FaceRecService extends Service {
             Log.d(TAG, "Loaded saved model!");
         }
         else {
-            faceRecognizer = LBPHFaceRecognizer.create(1,8,8,8, 100);
+            faceRecognizer = LBPHFaceRecognizer.create(1,8,8,8, TunableParams.TRAIN_THRESH);
             Log.d(TAG, "Initialized new model!");
         }
     }
@@ -183,6 +159,7 @@ public class FaceRecService extends Service {
 
             e.printStackTrace();
         }
+        trained = true;
 
         //TODO save_model in asynctask
         save_model();
@@ -190,6 +167,9 @@ public class FaceRecService extends Service {
 
 
     public int model_predict(Mat face) {
+        if(trained == false) {
+            return -123;
+        }
         Log.d(TAG, "Using model to predict!");
         int[] label = new int[2];
         double[] confidence = new double[2];

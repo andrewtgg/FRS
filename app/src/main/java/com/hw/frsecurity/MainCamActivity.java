@@ -166,7 +166,7 @@ public class MainCamActivity extends CamActivity {
     public native long tan_triggs(long src_addr);
     private void send_face_to_model(Mat img) {
         int label = -1;
-        Size scaleSize = new Size(200,200);
+        Size scaleSize = new Size(TunableParams.IMG_WIDTH,TunableParams.IMG_HEIGHT);
 
         Mat resized_face = new Mat();
         resize(img, resized_face, scaleSize , 0, 0, INTER_AREA);
@@ -180,6 +180,10 @@ public class MainCamActivity extends CamActivity {
         if(mBound) {
             Log.d(TAG, "Sending face to model");
             label = mService.model_predict(image_trigg);
+        }
+        if(label == -123) {
+            //Toast.makeText(this, "Error: Model not trained!", Toast.LENGTH_SHORT).show();
+            return;
         }
         save_face_to_db(resized_face, label);
         //Bitmap img2 = Bitmap.createBitmap(resized_face.cols(), resized_face.rows(),Bitmap.Config.ARGB_8888);
