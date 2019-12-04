@@ -17,6 +17,8 @@ import android.widget.ListView;
 
 import com.google.android.material.tabs.TabLayout;
 
+import com.google.android.material.tabs.TabLayout;
+
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -93,7 +95,7 @@ public class AccessLogsActivity extends AppCompatActivity {
                 alert.show();
             }
         });
-
     }
+
 
 }

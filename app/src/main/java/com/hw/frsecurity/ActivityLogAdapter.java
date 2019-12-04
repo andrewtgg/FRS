@@ -77,7 +77,6 @@ public class ActivityLogAdapter extends BaseAdapter {
             viewHolder.employeeImg.setBackgroundColor(Color.parseColor("#FF0000"));
             viewHolder.employeeStatus.setText("Status: Unidentified");
         } else {
-
             //TODO fix this?
             String employeeID = Integer.toString(A.get(position).getId());
             viewHolder.employeeId.setText("ID: " + employeeID);

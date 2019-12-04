@@ -12,6 +12,7 @@ import android.os.PowerManager;
 import android.util.Log;
 import android.util.Pair;
 
+
 import androidx.annotation.Nullable;
 
 import org.opencv.android.BaseLoaderCallback;
@@ -39,6 +40,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
 
 
 public class FaceRecService extends Service {
@@ -145,6 +147,7 @@ public class FaceRecService extends Service {
         }
         //TODO override finish to kill service
     };
+
     public void update_model(final String employee_id) {
         Log.d(TAG, "Updating model with employee id " + employee_id);
 
@@ -178,6 +181,7 @@ public class FaceRecService extends Service {
 
         Log.d(TAG, "Label: " + label[0] + "Confidence: " + confidence[0]);
         return new Pair<>(label[0], confidence[0]);
+
     }
 
 }

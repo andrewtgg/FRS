@@ -31,6 +31,13 @@ public class ActivityLogItem {
         this.probability = newProbability;
     }
 
+    public ActivityLogItem(int newId, byte[] newImg, String newDateSeen, int newStatus) {
+        this.id = newId;
+        this.img = newImg;
+        this.status = newStatus;
+        this.dateSeen = newDateSeen;
+    }
+
     public String getTimeSeen() {
         return timeSeen;
     }

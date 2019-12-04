@@ -143,6 +143,7 @@ public class MainCamActivity extends CamActivity {
                     Mat crop = new Mat(rgba_frame, face);
                     send_face_to_model(crop.clone());
                 }
+
                 dummy_ctr = 0;
             }
         }
@@ -192,6 +193,7 @@ public class MainCamActivity extends CamActivity {
             return;
         }
         save_face_to_db(resized_face, label, prob);
+
         //Bitmap img2 = Bitmap.createBitmap(resized_face.cols(), resized_face.rows(),Bitmap.Config.ARGB_8888);
         //Utils.matToBitmap(resized_face,img2);
     }
@@ -206,8 +208,8 @@ public class MainCamActivity extends CamActivity {
         byte[] byteimg = getBitmapAsByteArray(img2);
 
         Date date = new Date();
-
         ActivityLogItem a = new ActivityLogItem(label,byteimg,date.toString(), status, prob);
+
         db.insertLogItem(a);
     }
 
