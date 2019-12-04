@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,6 +45,10 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button_view_employees).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final Animation myAnim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.bounce);
+                BounceInterpolator interpolator = new BounceInterpolator(0.2, 20);
+                myAnim.setInterpolator(interpolator);
+                findViewById(R.id.button_view_employees).startAnimation(myAnim);
                 startActivity(new Intent(MainActivity.this, ViewEmployeesActivity.class));
             }
         });

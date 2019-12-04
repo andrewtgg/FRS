@@ -86,8 +86,9 @@ public class ViewEmployeesActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 switch (index) {
-                    case 1:
+                    case 0:
                         //BIG JOE DATABASE
+                        db.deleteEmployee(allEmployees.get(position));
                         allEmployees.remove(position);
                         lAdapter.notifyDataSetChanged();
                         recreate();
@@ -97,14 +98,6 @@ public class ViewEmployeesActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-
-        /*lView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(ViewEmployeesActivity.this, "Made it!", Toast.LENGTH_SHORT).show();
-            }
-        });*/
 
 
         findViewById(R.id.add_employee_btn).setOnClickListener(new View.OnClickListener() {
