@@ -27,7 +27,7 @@ public class Database extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE_NAME + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, EMPLOYEE_ID INTEGER UNIQUE, IMAGE BLOB, NAME TEXT, DEPARTMENT TEXT, LAST_SEEN TEXT);");
-        db.execSQL("CREATE TABLE " + LOG_TABLE + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, EMPLOYEE_ID INTEGER, IMAGE BLOB, DATE_SEEN TEXT, STATUS INTEGER);");
+        db.execSQL("CREATE TABLE " + LOG_TABLE + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, EMPLOYEE_ID INTEGER, IMAGE BLOB, DATE_SEEN TEXT, STATUS INTEGER, PROBABILITY REAL);");
         Toast.makeText(ctx, "TABLE " + TABLE_NAME + " AND " + LOG_TABLE + " has been created.", Toast.LENGTH_LONG).show();
         //Toast.makeText(ctx, "TABLE: " + TABLE_NAME + " VERSION: " + VERSION + " has been created.", Toast.LENGTH_LONG).show();
     }
@@ -61,6 +61,7 @@ public class Database extends SQLiteOpenHelper {
         cv.put("IMAGE", activityLogItem.getImg());
         cv.put("DATE_SEEN", activityLogItem.getDateSeen());
         cv.put("STATUS", activityLogItem.getStatus());
+        cv.put("PROBABILITY", activityLogItem.getProbability());
 
         db = getWritableDatabase();
         db.insert(LOG_TABLE, null, cv);
