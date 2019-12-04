@@ -1,5 +1,6 @@
 package com.hw.frsecurity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+@SuppressLint("SetTextI18n")
 public class ActivityLogAdapter extends BaseAdapter {
 
     Context context;
@@ -67,12 +69,18 @@ public class ActivityLogAdapter extends BaseAdapter {
             result = convertView;
         }
 
-        String employeeID = Integer.toString(A.get(position).getId());
-        viewHolder.employeeId.setText("ID: " + employeeID);
+
         if (A.get(position).getStatus() == 0) {
+
+            viewHolder.employeeId.setText("ID: ");
+
             viewHolder.employeeImg.setBackgroundColor(Color.parseColor("#FF0000"));
             viewHolder.employeeStatus.setText("Status: Unidentified");
         } else {
+
+            String employeeID = Integer.toString(A.get(position).getId());
+            viewHolder.employeeId.setText("ID: " + employeeID);
+
             viewHolder.employeeStatus.setText("Status: Identified");
         }
         viewHolder.employeeTimeSeen.setText("Time: " + A.get(position).getTimeSeen());
