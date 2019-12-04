@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.util.Pair;
 import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
@@ -138,8 +139,10 @@ public class MainCamActivity extends CamActivity {
                 new_idx = new_num-1;
                 num_faces = new_num;
                 Log.d(TAG, "newface at: " + new_idx);
-                Mat crop = new Mat(rgba_frame, facesArray[new_idx]);
-                send_face_to_model(crop.clone());
+                for (Rect face : facesArray) {
+                    Mat crop = new Mat(rgba_frame, face);
+                    send_face_to_model(crop.clone());
+                }
                 dummy_ctr = 0;
             }
         }
@@ -166,6 +169,7 @@ public class MainCamActivity extends CamActivity {
     public native long tan_triggs(long src_addr);
     private void send_face_to_model(Mat img) {
         int label = -1;
+        double prob = 0;
         Size scaleSize = new Size(TunableParams.IMG_WIDTH,TunableParams.IMG_HEIGHT);
 
         Mat resized_face = new Mat();
@@ -179,18 +183,20 @@ public class MainCamActivity extends CamActivity {
         Mat image_trigg = new Mat(res_addr);
         if(mBound) {
             Log.d(TAG, "Sending face to model");
-            label = mService.model_predict(image_trigg);
+            Pair<Integer, Double> p = mService.model_predict(image_trigg);
+            label = p.first;
+            prob = p.second;
         }
         if(label == -123) {
             //Toast.makeText(this, "Error: Model not trained!", Toast.LENGTH_SHORT).show();
             return;
         }
-        save_face_to_db(resized_face, label);
+        save_face_to_db(resized_face, label, prob);
         //Bitmap img2 = Bitmap.createBitmap(resized_face.cols(), resized_face.rows(),Bitmap.Config.ARGB_8888);
         //Utils.matToBitmap(resized_face,img2);
     }
 
-    private void save_face_to_db(Mat img, int label) {
+    private void save_face_to_db(Mat img, int label, double prob) {
 
         //Log.d(TAG, "Label for this guy: " + label);
         int status = (label == -1) ? 0 : 1;
@@ -201,7 +207,7 @@ public class MainCamActivity extends CamActivity {
 
         Date date = new Date();
 
-        ActivityLogItem a = new ActivityLogItem(label,byteimg,date.toString(), status);
+        ActivityLogItem a = new ActivityLogItem(label,byteimg,date.toString(), status, prob);
         db.insertLogItem(a);
     }
 

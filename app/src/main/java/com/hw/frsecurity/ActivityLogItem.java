@@ -20,13 +20,15 @@ public class ActivityLogItem {
         this.dateSeen = newDateSeen;
         this.timeSeen = newTimeSeen;
         this.probability = newProbability;
+
     }
 
-    public ActivityLogItem(int newId, byte[] newImg, String newDateSeen, int newStatus) {
+    public ActivityLogItem(int newId, byte[] newImg, String newDateSeen, int newStatus, double newProbability) {
         this.id = newId;
         this.img = newImg;
         this.status = newStatus;
         this.dateSeen = newDateSeen;
+        this.probability = newProbability;
     }
 
     public String getTimeSeen() {

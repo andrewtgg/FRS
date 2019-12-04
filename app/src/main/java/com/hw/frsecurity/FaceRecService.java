@@ -10,6 +10,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
+import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
@@ -166,9 +167,9 @@ public class FaceRecService extends Service {
     }
 
 
-    public int model_predict(Mat face) {
-        if(trained == false) {
-            return -123;
+    public Pair<Integer, Double> model_predict(Mat face) {
+        if(!trained) {
+            return new Pair<>(-123, (double) 0);
         }
         Log.d(TAG, "Using model to predict!");
         int[] label = new int[2];
@@ -176,7 +177,7 @@ public class FaceRecService extends Service {
         faceRecognizer.predict(face,label,confidence);
 
         Log.d(TAG, "Label: " + label[0] + "Confidence: " + confidence[0]);
-        return label[0];
+        return new Pair<>(label[0], confidence[0]);
     }
 
 }
