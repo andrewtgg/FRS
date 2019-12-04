@@ -1,6 +1,8 @@
 package com.hw.frsecurity;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
@@ -21,7 +23,8 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 
-
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 import static org.opencv.imgproc.Imgproc.INTER_AREA;
@@ -29,6 +32,8 @@ import static org.opencv.imgproc.Imgproc.INTER_CUBIC;
 import static org.opencv.imgproc.Imgproc.resize;
 
 public class TrainCamActivity extends CamActivity {
+
+    public final int NUM_TRAIN_PICS = TunableParams.NUM_PICS;
 
     public static String EMPLOYEE_PIC = "EMPLOYEE PIC";
     private final String TAG = "TrainCamActivity";
@@ -48,6 +53,7 @@ public class TrainCamActivity extends CamActivity {
     private String employee_id;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_train_cam);
@@ -56,6 +62,7 @@ public class TrainCamActivity extends CamActivity {
         Intent i = getIntent();
         employee_id = i.getExtras().getString("employee_id","none");
         Log.d(TAG, "Received employee_id:" + employee_id);
+        System.loadLibrary("native-lib");
     }
 
     @Override
@@ -90,38 +97,22 @@ public class TrainCamActivity extends CamActivity {
         }
 
         if (mJavaDetector != null)
-            mJavaDetector.detectMultiScale(gray_frame, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
+            mJavaDetector.detectMultiScale(gray_frame, faces, 1.1, 2, 2,
                     new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
 
 
         facesArray = faces.toArray();
         numfaces = facesArray.length;
         for (Rect rect : facesArray) {
-            Imgproc.rectangle(rgba_frame, rect.tl(), rect.br(), FACE_RECT_COLOR, 3);
             crop = new Mat(rgba_frame, rect);
-            int width = rgba_frame.cols();
-            int height = rgba_frame.rows();
-            //Mat largerImage = new Mat(width, height,crop.type());
-            //largerImage =
-            //Mat mask = new Mat(crop.rows(), crop.cols(), CvType.CV_8U, Scalar.all(0));
-            //crop.copyTo(largerImage, mask);
-            //return largerImage;
-            //Log.i(TAG,"LargerImage " + largerImage.rows() + " " + largerImage.cols());
-            // Rect roi = new Rect(0, 0, crop.cols(), 10);
-            //Mat sub =image.submat(roi);
-
-            // crop.copyTo(rgba_frame, )
-
-            //Size scaleSize = new Size(width,height);
-            //resize(crop, resizeimage, scaleSize , 0, 0, INTER_CUBIC);
-            //Log.i(TAG,"resize " + resizeimage.rows() + " " + resizeimage.cols());
-            //return resizeimage;
+            if (numfaces == 1) {
+                detected_face = crop;
+            }
+            Imgproc.rectangle(rgba_frame, rect.tl(), rect.br(), FACE_RECT_COLOR, 1);
 
         }
 
-        if (numfaces == 1) {
-            detected_face = crop;
-        }
+
 
         /*if (resizeimage != null) {
             return resizeimage;
@@ -171,28 +162,66 @@ public class TrainCamActivity extends CamActivity {
             Utils.matToBitmap(resized_face,img);
             preview_face.setImageBitmap(img);
 
-            train_faces.add(dface);
+            Size scaleSize2 = new Size(TunableParams.IMG_WIDTH,TunableParams.IMG_HEIGHT);
+
+            Mat resized_face2 = new Mat();
+            resize(dface, resized_face2, scaleSize2 , 0, 0, INTER_AREA);
+
+            train_faces.add(resized_face2);
+
+            //Bitmap img2 = Bitmap.createBitmap(resized_face2.cols(), resized_face2.rows(),Bitmap.Config.ARGB_8888);
+            //Utils.matToBitmap(resized_face2,img2);
+
+            //train_faces.add(img2);
         }
 
         int num_pictures = train_faces.size();
         Toast.makeText(this, "Total pics: " + num_pictures, Toast.LENGTH_SHORT).show();
 
-        if(num_pictures >= 3) {
+        if(num_pictures >= NUM_TRAIN_PICS) {
             Intent resultIntent = new Intent();
+            //Bitmap returned_face = train_faces.get(0); //return the first face picture
+            Bitmap returned_face = Bitmap.createBitmap(train_faces.get(0).cols(), train_faces.get(0).rows(),Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(train_faces.get(0),returned_face);
+            //Bitmap img = Bitmap.createBitmap(returned_face.cols(), returned_face.rows(),Bitmap.Config.ARGB_8888);
+            //Utils.matToBitmap(returned_face,img);
 
-            Mat returned_face = train_faces.get(0); //return the first face picture
-
-            Bitmap img = Bitmap.createBitmap(returned_face.cols(), returned_face.rows(),Bitmap.Config.ARGB_8888);
-            Utils.matToBitmap(returned_face,img);
-
-            resultIntent.putExtra(EMPLOYEE_PIC, img);
+            resultIntent.putExtra(EMPLOYEE_PIC, returned_face);
             setResult(Activity.RESULT_OK, resultIntent);
             semaphore_cam--;
+
+            save_employee();
             this.finish();
         }
         else {
             semaphore_cam--;
         }
+
+    }
+
+    private void save_employee() {
+        Log.d(TAG, "Saving images to local storage");
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+
+        SaveEmployeeThread t = new SaveEmployeeThread(cw,train_faces, employee_id);
+        t.run();
+        /*File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        for (int i=0;i<train_faces.size();i++) {
+
+            Bitmap face = train_faces.get(i);
+            String filename = employee_id + "_" + i + ".jpg";
+            Log.d(TAG, filename);
+            File mypath=new File(directory,filename);
+            FileOutputStream out;
+            try {
+                out = new FileOutputStream(mypath);
+                // Use the compress method on the BitMap object to write image to the OutputStream
+                face.compress(Bitmap.CompressFormat.JPEG, 50, out);
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }*/
 
     }
 }

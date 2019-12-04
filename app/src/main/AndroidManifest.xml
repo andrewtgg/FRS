@@ -46,6 +46,10 @@
             android:screenOrientation="landscape"/>
 
 
+        <service
+            android:name=".FaceRecService" />
+
+
     </application>
 
 </manifest>
