@@ -2,6 +2,7 @@ package com.hw.frsecurity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -41,7 +42,7 @@ public class AccessLogsActivity extends AppCompatActivity {
         Cursor dbCursor = db.getActivityLogs();
 
 
-        ArrayList<ActivityLogItem> allAcitivityLog = new ArrayList<>();
+        final ArrayList<ActivityLogItem> allAcitivityLog = new ArrayList<>();
 
         while (dbCursor.moveToNext()) {
             // int newId, byte[] newImg, String newDateSeen, int newStatus
@@ -50,7 +51,7 @@ public class AccessLogsActivity extends AppCompatActivity {
             String dateOnly = dateFmt.format(dbCursor.getString(3));
             String timeOnly = timeFmt.format(dbCursor.getString(3));
             ActivityLogItem activityLogItem = new ActivityLogItem(dbCursor.getInt(1), dbCursor.getBlob(2), dateOnly, timeOnly
-                    , dbCursor.getInt(4));
+                    , dbCursor.getInt(4), dbCursor.getFloat(5));
             allAcitivityLog.add(activityLogItem);
         }
 
@@ -73,7 +74,7 @@ public class AccessLogsActivity extends AppCompatActivity {
             String dateOnly = dateFmt.format(date);
             String timeOnly = timeFmt.format(date);
 
-            allAcitivityLog.add(new ActivityLogItem(randEmployeeId[rand.nextInt(3)], imgData, dateOnly, timeOnly, rand.nextInt(2)));
+            allAcitivityLog.add(new ActivityLogItem(randEmployeeId[rand.nextInt(3)], imgData, dateOnly, timeOnly, rand.nextInt(2), 0.4532));
         }
         /*          */
 
@@ -85,14 +86,18 @@ public class AccessLogsActivity extends AppCompatActivity {
 
         lView.setAdapter(lAdapter);
 
-        /*
+
         lView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(AccessLogsActivity.this, "Made it!", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder alert = new AlertDialog.Builder(AccessLogsActivity.this);
+                // convert the decimal to percentage
+                alert.setMessage("Probability: " + allAcitivityLog.get(i).getProbability());
+                alert.setPositiveButton("OK",null);
+                alert.show();
             }
         });
-        */
+
     }
 
     /* Note: This is just to create mock data */

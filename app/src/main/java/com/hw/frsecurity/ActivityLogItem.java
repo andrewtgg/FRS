@@ -10,12 +10,16 @@ public class ActivityLogItem {
     private String dateSeen;
     private String timeSeen;
 
-    public ActivityLogItem(int newId, byte[] newImg, String newDateSeen, String newTimeSeen, int newStatus) {
+    // prediction probability
+    private double probability;
+
+    public ActivityLogItem(int newId, byte[] newImg, String newDateSeen, String newTimeSeen, int newStatus, double newProbability) {
         this.id = newId;
         this.img = newImg;
         this.status = newStatus;
         this.dateSeen = newDateSeen;
         this.timeSeen = newTimeSeen;
+        this.probability = newProbability;
     }
 
     public String getTimeSeen() {
@@ -56,5 +60,13 @@ public class ActivityLogItem {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public double getProbability() {
+        return probability;
+    }
+
+    public void setProbability(double probability) {
+        this.probability = probability;
     }
 }
