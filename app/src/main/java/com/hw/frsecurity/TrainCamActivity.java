@@ -33,7 +33,7 @@ import static org.opencv.imgproc.Imgproc.resize;
 
 public class TrainCamActivity extends CamActivity {
 
-    public final int NUM_TRAIN_PICS = 5;
+    public final int NUM_TRAIN_PICS = TunableParams.NUM_PICS;
 
     public static String EMPLOYEE_PIC = "EMPLOYEE PIC";
     private final String TAG = "TrainCamActivity";
@@ -162,7 +162,7 @@ public class TrainCamActivity extends CamActivity {
             Utils.matToBitmap(resized_face,img);
             preview_face.setImageBitmap(img);
 
-            Size scaleSize2 = new Size(200,200);
+            Size scaleSize2 = new Size(TunableParams.IMG_WIDTH,TunableParams.IMG_HEIGHT);
 
             Mat resized_face2 = new Mat();
             resize(dface, resized_face2, scaleSize2 , 0, 0, INTER_AREA);

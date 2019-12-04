@@ -41,6 +41,7 @@ public class FaceRecService extends Service {
 
     private final IBinder binder = new LocalBinder();
     public static LBPHFaceRecognizer faceRecognizer;
+    private boolean trained = false;
 
 
     public class LocalBinder extends Binder {
@@ -90,7 +91,7 @@ public class FaceRecService extends Service {
             Log.d(TAG, "Loaded saved model!");
         }
         else {
-            faceRecognizer = LBPHFaceRecognizer.create(1,8,8,8, 100);
+            faceRecognizer = LBPHFaceRecognizer.create(1,8,8,8, TunableParams.TRAIN_THRESH);
             Log.d(TAG, "Initialized new model!");
         }
     }
@@ -153,6 +154,7 @@ public class FaceRecService extends Service {
         }catch (Exception e) {
             e.printStackTrace();
         }
+        trained = true;
 
         //TODO save_model in asynctask
         save_model();
@@ -160,6 +162,9 @@ public class FaceRecService extends Service {
 
 
     public int model_predict(Mat face) {
+        if(trained == false) {
+            return -123;
+        }
         Log.d(TAG, "Using model to predict!");
         int[] label = new int[2];
         double[] confidence = new double[2];
