@@ -40,7 +40,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
+import java.util.regex.Pattern;
 
 
 public class FaceRecService extends Service {
@@ -101,9 +101,13 @@ public class FaceRecService extends Service {
             Log.d(TAG, "Loaded saved model!");
         }
         else {
-            faceRecognizer = LBPHFaceRecognizer.create(1,8,8,8, TunableParams.TRAIN_THRESH);
+            create_new_model();
             Log.d(TAG, "Initialized new model!");
         }
+    }
+
+    public void create_new_model() {
+        faceRecognizer = LBPHFaceRecognizer.create(1,8,8,8, TunableParams.TRAIN_THRESH);
     }
 
     public void save_model() {
@@ -164,9 +168,29 @@ public class FaceRecService extends Service {
             e.printStackTrace();
         }
         trained = true;
+    }
 
-        //TODO save_model in asynctask
-        save_model();
+    public void delete_employee(final String employee_id) {
+        Log.d(TAG, "Deleting employee id " + employee_id);
+
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        File directory = cw.getDir("train_images", Context.MODE_PRIVATE);
+        final Pattern p = Pattern.compile((employee_id+"_.*"));
+        FilenameFilter employeefilter = new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                return p.matcher(name).matches();
+            };
+        };
+
+        File[] face_files = directory.listFiles(employeefilter);
+        for (File f: face_files) {
+            f.delete();
+        }
+    }
+
+
+    public void retrain_model(String[] employee_ids) {
+
     }
 
 

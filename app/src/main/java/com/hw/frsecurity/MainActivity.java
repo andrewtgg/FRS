@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View  v) {
                 final Animation myAnim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.bounce);
-                BounceInterpolator interpolator = new BounceInterpolator(0.2, 20);
+                BounceInterpolator interpolator = new BounceInterpolator(0.2, 40);
                 myAnim.setInterpolator(interpolator);
                 findViewById(R.id.button_main_cam).startAnimation(myAnim);
                 startActivity(new Intent(MainActivity.this, MainCamActivity.class));
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final Animation myAnim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.bounce);
-                BounceInterpolator interpolator = new BounceInterpolator(0.2, 20);
+                BounceInterpolator interpolator = new BounceInterpolator(0.2, 40);
                 myAnim.setInterpolator(interpolator);
                 findViewById(R.id.button_access_logs).startAnimation(myAnim);
                 button_access_logs.setEnabled(false);
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final Animation myAnim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.bounce);
-                BounceInterpolator interpolator = new BounceInterpolator(0.2, 20);
+                BounceInterpolator interpolator = new BounceInterpolator(0.2, 40);
                 myAnim.setInterpolator(interpolator);
                 findViewById(R.id.button_view_employees).startAnimation(myAnim);
                 startActivity(new Intent(MainActivity.this, ViewEmployeesActivity.class));

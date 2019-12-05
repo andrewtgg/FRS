@@ -130,6 +130,7 @@ public class AddEmployeeActivity extends AppCompatActivity {
 
                     finish();
                     mService.update_model(newEmployeeIDText);
+                    mService.save_model();
                     /*
                     startActivity(new Intent(AddEmployeeActivity.this, ViewEmployeesActivity.class));
                     finish();
