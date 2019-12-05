@@ -35,7 +35,7 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/generalnotitle"
-            android:screenOrientation="portrait">
+            android:screenOrientation="locked">
         </activity>
 
         <activity
