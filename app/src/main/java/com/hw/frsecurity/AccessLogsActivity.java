@@ -90,7 +90,7 @@ public class AccessLogsActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 AlertDialog.Builder alert = new AlertDialog.Builder(AccessLogsActivity.this);
                 // convert the decimal to percentage
-                alert.setMessage("Probability: " + allAcitivityLog.get(i).getProbability());
+                alert.setMessage("Distance: " + allAcitivityLog.get(i).getProbability());
                 alert.setPositiveButton("OK",null);
                 alert.show();
             }
