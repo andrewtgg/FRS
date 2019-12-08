@@ -137,7 +137,7 @@ int main(int argc, const char *argv[]) {
 
 extern "C"
 JNIEXPORT jlong JNICALL
-Java_com_hw_frsecurity_SaveEmployeeThread_tan_1triggs(JNIEnv *env, jobject thiz, jlong src_addr) {
+Java_com_hw_frsecurity_SaveEmployeeTask_tan_1triggs(JNIEnv *env, jobject thiz, jlong src_addr) {
     Mat* input = (Mat*)src_addr;
 
     Mat *mat = new Mat();

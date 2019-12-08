@@ -1,10 +1,9 @@
 package com.hw.frsecurity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -15,7 +14,6 @@ import android.widget.Toast;
 
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.Utils;
-import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
@@ -23,8 +21,6 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 import static org.opencv.imgproc.Imgproc.INTER_AREA;
@@ -54,6 +50,7 @@ public class TrainCamActivity extends CamActivity {
 
 
 
+    @SuppressLint("MissingSuperCall")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_train_cam);
@@ -203,8 +200,8 @@ public class TrainCamActivity extends CamActivity {
         Log.d(TAG, "Saving images to local storage");
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
 
-        SaveEmployeeThread t = new SaveEmployeeThread(cw,train_faces, employee_id);
-        t.run();
+        SaveEmployeeTask t = new SaveEmployeeTask(cw,train_faces, employee_id);
+        t.execute();
         /*File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         for (int i=0;i<train_faces.size();i++) {
 

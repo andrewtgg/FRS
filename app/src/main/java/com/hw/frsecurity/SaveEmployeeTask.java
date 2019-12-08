@@ -3,6 +3,7 @@ package com.hw.frsecurity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import org.opencv.android.Utils;
@@ -13,21 +14,22 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 
-public class SaveEmployeeThread extends Thread {
+public class SaveEmployeeTask extends AsyncTask<Void,Void,Void> {
 
-    private final String TAG = "SaveEmployeeThread";
+    private final String TAG = "SaveEmployeeTask";
     private ContextWrapper cw;
     private ArrayList<Mat> train_faces;
     private String employee_id;
-    public SaveEmployeeThread(ContextWrapper c, ArrayList<Mat> tf, String id) {
+    public SaveEmployeeTask(ContextWrapper c, ArrayList<Mat> tf, String id) {
         cw = c;
         train_faces = tf;
         employee_id = id;
 
     }
     public native long tan_triggs(long src_addr);
+
     @Override
-    public void run() {
+    protected Void doInBackground(Void... voids) {
         System.loadLibrary("native-lib");
         File directory = cw.getDir("train_images", Context.MODE_PRIVATE);
         for (int i=0;i<train_faces.size();i++) {
@@ -57,5 +59,6 @@ public class SaveEmployeeThread extends Thread {
                 e.printStackTrace();
             }
         }
+        return null;
     }
 }
