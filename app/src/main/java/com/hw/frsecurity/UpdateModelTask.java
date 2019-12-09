@@ -47,25 +47,16 @@ public class UpdateModelTask extends AsyncTask<String, Void, Void> {
 
 
         for(int i =0; i < face_files.length;i++) {
-            Log.d(TAG, "Filename: " + face_files[i].toString() + " ID:" + employee_id + " index: " + i);
-
-
             Mat image = Imgcodecs.imread(face_files[i].toString());
             Mat image_gray = new Mat();
             Imgproc.cvtColor(image,image_gray,Imgproc.COLOR_BGR2GRAY);
             train_images.add(image_gray);
             labels.put(i,0,Integer.parseInt(employee_id));
         }
-        Log.d(TAG, "Labels: " + labels.dump());
-
-
 
         if(FaceRecService.faceRecognizer != null) {
-            Log.d(TAG, "Training model with employee id " + employee_id);
             FaceRecService.faceRecognizer.update(train_images, labels);
 
-            //String s = FaceRecService.faceRecognizer.getLabelInfo(12345);
-            //Log.d(TAG, "label info: " + s);
 
         }
 

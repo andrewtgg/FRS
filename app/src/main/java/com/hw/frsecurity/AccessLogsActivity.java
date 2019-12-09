@@ -57,11 +57,9 @@ public class AccessLogsActivity extends AppCompatActivity {
 
             try {
                 String datestring = dbCursor.getString(3);
-                Log.d(TAG, "datestring: " + datestring);
                 date = fmt.parse(dbCursor.getString(3));
-                Log.d(TAG, "success: " + date.toString());
             } catch (Exception e) {
-                Log.d(TAG, "Parse error");
+                
                 e.printStackTrace();
             }
 
@@ -70,7 +68,6 @@ public class AccessLogsActivity extends AppCompatActivity {
             ActivityLogItem activityLogItem = new ActivityLogItem(dbCursor.getInt(1), dbCursor.getBlob(2), dateOnly, timeOnly
                     , dbCursor.getInt(4), dbCursor.getFloat(5));
 
-            Log.d(TAG, "ID: " + dbCursor.getInt(1) + "STAUTS:" + dbCursor.getInt(4));
             allAcitivityLog.add(activityLogItem);
         }
 

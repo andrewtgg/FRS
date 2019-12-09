@@ -130,10 +130,8 @@ public abstract class CamActivity extends AppCompatActivity implements CameraBri
     public void onResume() {
         super.onResume();
         if (!OpenCVLoader.initDebug()) {
-            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
             OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION, this, mLoaderCallback);
         } else {
-            Log.d(TAG, "OpenCV library found inside package. Using it!");
             mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
         }
     }
@@ -169,12 +167,9 @@ public abstract class CamActivity extends AppCompatActivity implements CameraBri
 
     }
     @Override
-    public void onCameraViewStopped() {
-        Log.d(TAG, "Stopped camera view");
-    }
+    public void onCameraViewStopped() {}
     @Override
     public void onDestroy() {
-        Log.d(TAG, "Destroy camera view");
         super.onDestroy();
         if (openCvCameraView != null)
             openCvCameraView.disableView();

@@ -58,16 +58,12 @@ public class TrainCamActivity extends CamActivity {
 
         Intent i = getIntent();
         employee_id = i.getExtras().getString("employee_id","none");
-        Log.d(TAG, "Received employee_id:" + employee_id);
         System.loadLibrary("native-lib");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(TAG, "pause camera view");
-
-
     }
 
     @Override
@@ -197,7 +193,6 @@ public class TrainCamActivity extends CamActivity {
     }
 
     private void save_employee() {
-        Log.d(TAG, "Saving images to local storage");
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
 
         SaveEmployeeTask t = new SaveEmployeeTask(cw,train_faces, employee_id);

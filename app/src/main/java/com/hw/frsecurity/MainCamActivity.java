@@ -95,10 +95,8 @@ public class MainCamActivity extends CamActivity {
     public void onResume() {
         super.onResume();
         if (!OpenCVLoader.initDebug()) {
-            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
             OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION, this, mLoaderCallback);
         } else {
-            Log.d(TAG, "OpenCV library found inside package. Using it!");
             mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
 
         }
@@ -130,7 +128,6 @@ public class MainCamActivity extends CamActivity {
         Rect[] facesArray = faces.toArray();
         int new_num = facesArray.length;
         int new_idx;
-        Log.d(TAG, "num_faces: " + num_faces + " new_num: " + new_num + "dummy_ctr: " + dummy_ctr + "dummy_ctr2: " + dummy_ctr2);
         if(new_num > num_faces) {
 
             dummy_ctr++;
@@ -138,7 +135,6 @@ public class MainCamActivity extends CamActivity {
             if(dummy_ctr > 2) {
                 new_idx = new_num-1;
                 num_faces = new_num;
-                Log.d(TAG, "newface at: " + new_idx);
                 for (Rect face : facesArray) {
                     Mat crop = new Mat(rgba_frame, face);
                     send_face_to_model(crop.clone());
@@ -183,7 +179,6 @@ public class MainCamActivity extends CamActivity {
 
         Mat image_trigg = new Mat(res_addr);
         if(mBound) {
-            Log.d(TAG, "Sending face to model");
             Pair<Integer, Double> p = mService.model_predict(image_trigg);
             label = p.first;
             prob = p.second;
@@ -200,9 +195,8 @@ public class MainCamActivity extends CamActivity {
 
     private void save_face_to_db(Mat img, int label, double prob) {
 
-        //Log.d(TAG, "Label for this guy: " + label);
         int status = (label == -1) ? 0 : 1;
-        //Log.d(TAG, "Status for this guy: " + status);
+
         Bitmap img2 = Bitmap.createBitmap(img.cols(), img.rows(),Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(img,img2);
         byte[] byteimg = getBitmapAsByteArray(img2);

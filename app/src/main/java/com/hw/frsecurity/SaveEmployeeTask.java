@@ -38,12 +38,10 @@ public class SaveEmployeeTask extends AsyncTask<Void,Void,Void> {
             Mat face_gray = new Mat();
             Imgproc.cvtColor(face,face_gray,Imgproc.COLOR_BGR2GRAY);
 
-            Log.d(TAG, "ADR: " + face_gray.getNativeObjAddr());
+
             long res_addr = tan_triggs(face_gray.getNativeObjAddr());
-            Log.d(TAG, "new adr: " + res_addr);
 
             Mat face2 = new Mat(res_addr);
-            Log.d(TAG, "new : " + face2.channels());
 
             Bitmap img = Bitmap.createBitmap(face2.cols(), face2.rows(),Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(face2,img);

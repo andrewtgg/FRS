@@ -93,17 +93,14 @@ public class ListAdapter extends BaseAdapter {
         } catch (Exception e) {
             //e.printStackTrace();
         }
-        Log.d(TAG, "Continuing");
 
         if (convertedDate != null) {
-            Log.d(TAG, "in here");
             String dateOnly = dateFmt.format(convertedDate);
             String timeOnly = timeFmt.format(convertedDate);
 
             viewHolder.employeeTimeSeen.setText("Time seen: " + timeOnly);
             viewHolder.employeeDateSeen.setText("Date seen: " + dateOnly);
         }
-        Log.d(TAG, "made it out");
 
         // decodes byte array into image
         Bitmap img = BitmapFactory.decodeByteArray(A.get(position).getImg(), 0, A.get(position).getImg().length);

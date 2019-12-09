@@ -81,8 +81,6 @@ public class ViewEmployeesActivity extends AppCompatActivity {
 
         lAdapter = new ListAdapter(ViewEmployeesActivity.this, allEmployees);
 
-        Log.d(TAG, "adapter set");
-
         lView.setAdapter(lAdapter);
 
         SwipeMenuCreator creator = new SwipeMenuCreator() {

@@ -1,6 +1,8 @@
+# Facial Recognition for Security
 
-Make sure NDK, CMake, LLDB are installed.
-
+For consistency, this project was developed using API 27.  
+Make sure NDK, CMake, LLDB are installed.  
+This project requires OpenCV to function.  
 
 gradle.properties removed from scm, should be this:
 # Project-wide Gradle settings.
